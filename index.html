@@ -8,6 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="enhancements.css">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -51,7 +52,7 @@
             <button id="ourFatherButton" class="primary-button">Padre nuestro</button>
             <button id="hailMaryButton" class="secondary-button">Dios te salve</button>
           </div>
-          <div class="continuation"><span></span><p>texto2</p><span></span></div>
+          <section id="continuationText" class="continuation prayer-text"></section>
         </article>
       </section>
     </main>
@@ -67,17 +68,27 @@
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
+    <p class="version-label">Oraciones Católicas · Versión 1.4</p>
     <label>Tamaño de letra <output id="fontSizeOutput">18 px</output></label>
     <input id="fontSize" type="range" min="16" max="32" value="18">
     <label for="fontColor">Color del texto</label>
     <div class="color-row"><input id="fontColor" type="color" value="#34252a"><button id="resetColor">Restablecer</button></div>
-    <label for="fontFamily">Tipografía</label>
-    <select id="fontFamily">
+    <label for="viewFontFamily">Tipografía de las ventanas</label>
+    <select id="viewFontFamily">
       <option value="Georgia, serif">Clásica</option>
       <option value="Arial, sans-serif">Arial</option>
       <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
       <option value="Verdana, sans-serif">Verdana</option>
     </select>
+    <label for="modalFontFamily">Tipografía de los modales</label>
+    <select id="modalFontFamily">
+      <option value="Georgia, serif">Clásica</option>
+      <option value="Arial, sans-serif">Arial</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+    </select>
+    <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
+    <p id="settingsSaved" class="settings-saved" role="status"></p>
   </dialog>
   <script src="contenido.js"></script>
   <script src="app.js"></script>
