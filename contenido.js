@@ -152,7 +152,7 @@ const DIAS_NOVENA = [
     nombreDelDia: `Quinto Día:`,
     cita: `”Su padre y su madre estaban admirados por lo que oían decir de Jesús. El anciano Simeón, después de bendecirlos, dijo a María, la madre: “Este niño será causa de caída y elevación para muchos en Israel; será signo de contradicción, y a ti mismo una espada te atravesara el corazón."(Lc 2, 33-35)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `María, siendo Madre de Cristo, siempre hizo lo que Él le dijo. Imitemos permanentemente su obediencia a la voluntad de Dios y escuchémoslo día a día desde el Evangelio donde Jesús nos dice que quiere que hagamos.`
+    reflexion: `Desde niño, Jesús cumplió con la misión encomendada por su Padre celestial, que fue la de transmitir su palabra. Sin embargo, no siempre fue entendido y aceptado dicho mensaje, lo cual derivo en su muerte. Pidámosle a Cristo, por intersección de María, que nos llene de valor para cambiar aquellas cosas que es posible cambiar y serenidad para soportar las que no podemos cambiar.`
   },
 
   // -------------------- DÍA 6 --------------------
@@ -161,7 +161,7 @@ const DIAS_NOVENA = [
     nombreDelDia: `Sexto Día:`,
     cita: `”Jesús le respondió: Mujer, ¿qué tenemos que ver nosotros? Mi hora no ha llegado todavía. Pero su madre dijo a los sirvientes: Hagan todo lo que Él les diga." (Jn 2, 4-5)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: ``
+    reflexion: `María, siendo Madre de Cristo, siempre hizo lo que Él le dijo. Imitemos permanentemente su obediencia a la voluntad de Dios y escuchémoslo día a día desde el Evangelio donde Jesús nos dice que quiere que hagamos.`
   },
 
   // -------------------- DÍA 7 --------------------

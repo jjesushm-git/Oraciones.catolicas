@@ -30,8 +30,16 @@ function formatPrayerText(text){
   });
   flush();return parts.join('');
 }
+function formatModalPrayer(text){
+  const clean=String(text||'').replace(/\r/g,'').split('\n').map(line=>line.trim()).filter(Boolean).join(' ');
+  const sections=clean.split(/(?=Gloria al Padre)/i);
+  return sections.map((section,index)=>{
+    const formatted=escapeHtml(section).replace(/(Amén\.?)(?=\s*$)/i,'<strong class="modal-amen">$1</strong>');
+    return `<p class="${index?'modal-gloria':'modal-prayer-paragraph'}">${formatted}</p>`;
+  }).join('');
+}
 function openDay(day){currentDay=day;const content=NOVENA_CONTENT.days[day-1];$('#readingLabel').textContent=`DÍA ${day}`;$('#mainText').innerHTML=formatPrayerText(content.texto);$('#continuationText').innerHTML=formatPrayerText(content.texto2);showView('reading')}
-function openPrayer(title,text,hasCounter=false){$('#modalTitle').textContent=title;$('#modalText').innerHTML=formatPrayerText(text);$('#counter').classList.toggle('hidden',!hasCounter);counterValue=1;$('#counterValue').textContent=counterValue;$('#prayerDialog').showModal()}
+function openPrayer(title,text,hasCounter=false){$('#modalTitle').textContent=title;$('#modalText').innerHTML=formatModalPrayer(text);$('#counter').classList.toggle('hidden',!hasCounter);counterValue=1;$('#counterValue').textContent=counterValue;$('#prayerDialog').showModal()}
 function paintSettings(values){const root=document.documentElement;root.style.setProperty('--prayer-size',`${values.size||18}px`);root.style.setProperty('--prayer-color',values.color||'#24362d');root.style.setProperty('--view-font',values.viewFamily||values.family||'Georgia, serif');root.style.setProperty('--modal-font',values.modalFamily||values.family||'Georgia, serif')}
 function applySettings(){paintSettings(settings);$('#fontSize').value=settings.size||18;$('#fontSizeOutput').textContent=`${settings.size||18} px`;$('#fontColor').value=settings.color||'#24362d';$('#viewFontFamily').value=settings.viewFamily||settings.family||'Georgia, serif';$('#modalFontFamily').value=settings.modalFamily||settings.family||'Georgia, serif'}
 function saveSettings(){Object.assign(settings,draftSettings);localStorage.setItem('novenaSettings',JSON.stringify(settings));applySettings();$('#settingsSaved').textContent='Cambios guardados';setTimeout(()=>{$('#settingsSaved').textContent=''},1800)}
@@ -56,4 +64,4 @@ $('#saveSettingsButton').onclick=saveSettings;
 $('#settingsDialog').addEventListener('close',applySettings);
 const savedDate=localStorage.getItem('novenaStart');if(savedDate)$('#dateText').textContent=savedDate;
 renderDays();applySettings();
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=1.5'));
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=1.6'));
