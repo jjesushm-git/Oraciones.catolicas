@@ -6,7 +6,7 @@ const settings=JSON.parse(localStorage.getItem('novenaSettings')||'{}');
 let draftSettings={};
 const completed=JSON.parse(localStorage.getItem('novenaCompleted')||'[]');
 
-function showView(name){Object.values(views).forEach(v=>v.classList.remove('active'));views[name].classList.add('active');currentView=name;backButton.classList.toggle('hidden',name==='home');window.scrollTo(0,0)}
+function showView(name,addHistory=true){Object.values(views).forEach(v=>v.classList.remove('active'));views[name].classList.add('active');currentView=name;backButton.classList.toggle('hidden',name==='home');if(addHistory&&history.state?.view!==name)history.pushState({view:name},'');window.scrollTo(0,0)}
 function saveCompleted(){localStorage.setItem('novenaCompleted',JSON.stringify(completed));renderDays()}
 function renderDays(){
   $('#dayList').innerHTML=Array.from({length:9},(_,i)=>{const day=i+1;return `<div class="day-row"><button class="day-button" data-day="${day}"><span>Día ${day}</span><span>›</span></button><label class="check-wrap" aria-label="Marcar día ${day}"><input type="checkbox" data-check="${day}" ${completed.includes(day)?'checked':''}></label></div>`}).join('');
@@ -32,10 +32,10 @@ function formatPrayerText(text){
 }
 function formatModalPrayer(text){
   const clean=String(text||'').replace(/\r/g,'').split('\n').map(line=>line.trim()).filter(Boolean).join(' ');
-  const sections=clean.split(/(?=Gloria al Padre)/i);
-  return sections.map((section,index)=>{
-    const formatted=escapeHtml(section).replace(/(Amén\.?)(?=\s*$)/i,'<strong class="modal-amen">$1</strong>');
-    return `<p class="${index?'modal-gloria':'modal-prayer-paragraph'}">${formatted}</p>`;
+  return clean.split(/(?=Gloria al Padre)/i).map((section,index)=>{
+    const hasAmen=/\bAmén\.?\s*$/i.test(section);
+    const prayer=section.replace(/\s*Amén\.?\s*$/i,'').trim();
+    return `<section class="${index?'modal-gloria':'modal-prayer-section'}"><p class="modal-prayer-paragraph">${escapeHtml(prayer)}</p>${hasAmen?'<p class="modal-amen-line">Amén.</p>':''}</section>`;
   }).join('');
 }
 function openDay(day){currentDay=day;const content=NOVENA_CONTENT.days[day-1];$('#readingLabel').textContent=`DÍA ${day}`;$('#mainText').innerHTML=formatPrayerText(content.texto);$('#continuationText').innerHTML=formatPrayerText(content.texto2);showView('reading')}
@@ -45,7 +45,7 @@ function applySettings(){paintSettings(settings);$('#fontSize').value=settings.s
 function saveSettings(){Object.assign(settings,draftSettings);localStorage.setItem('novenaSettings',JSON.stringify(settings));applySettings();$('#settingsSaved').textContent='Cambios guardados';setTimeout(()=>{$('#settingsSaved').textContent=''},1800)}
 
 $('#openNovena').onclick=()=>showView('days');
-backButton.onclick=()=>showView(currentView==='reading'?'days':'home');
+backButton.onclick=()=>history.back();
 $('#clearChecks').onclick=()=>{completed.splice(0);saveCompleted()};
 $('#dateButton').onclick=()=>{const old=localStorage.getItem('novenaStart');if(old){localStorage.removeItem('novenaStart');$('#dateText').textContent='Marcar inicio'}else{const d=new Date(),months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],h=d.getHours(),hour=h%12||12,ampm=h>=12?'pm':'am';const value=`${String(d.getDate()).padStart(2,'0')}/${months[d.getMonth()]}/${d.getFullYear()} ${String(hour).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} ${ampm}`;localStorage.setItem('novenaStart',value);$('#dateText').textContent=value}};
 $('#ourFatherButton').onclick=()=>openPrayer('Padre nuestro',NOVENA_CONTENT.padreNuestro);
@@ -64,4 +64,24 @@ $('#saveSettingsButton').onclick=saveSettings;
 $('#settingsDialog').addEventListener('close',applySettings);
 const savedDate=localStorage.getItem('novenaStart');if(savedDate)$('#dateText').textContent=savedDate;
 renderDays();applySettings();
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=1.6'));
+if(!sessionStorage.getItem('novenaHistoryReady')){
+  history.replaceState({view:'home',exitBoundary:true},'');
+  history.pushState({view:'home',appGuard:true},'');
+  sessionStorage.setItem('novenaHistoryReady','1');
+}else if(history.state?.view){
+  showView(history.state.view,false);
+}
+window.addEventListener('popstate',(event)=>{
+  if(event.state?.exitBoundary){
+    showView('home',false);
+    if(confirm('¿Quieres cerrar Oraciones Católicas?')){
+      sessionStorage.removeItem('novenaHistoryReady');
+      history.back();
+    }else{
+      history.pushState({view:'home',appGuard:true},'');
+    }
+    return;
+  }
+  if(event.state?.view)showView(event.state.view,false);
+});
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=1.8'));

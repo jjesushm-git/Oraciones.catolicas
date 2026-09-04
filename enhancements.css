@@ -14,21 +14,29 @@
   font-family:var(--modal-font);
 }
 
-.modal-prayer-paragraph,
-.modal-gloria{
+.prayer-text p:not(.amen),
+.modal-prayer-paragraph{
+  text-align:justify;
+  text-justify:inter-word;
+  hyphens:auto;
+}
+
+.modal-prayer-paragraph{
   margin:0;
-  line-height:1.85;
+  line-height:1.75;
 }
 
 .modal-gloria{
-  margin-top:1.5rem;
-  padding-top:1.25rem;
+  margin-top:1.35rem;
+  padding-top:1.15rem;
   border-top:1px solid #d5ad49;
 }
 
-.modal-amen{
+.modal-amen-line{
+  margin:.2rem 0 1rem;
   color:#0d422d;
   font-weight:700;
+  text-align:right;
 }
 
 .prayer-text{

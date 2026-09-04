@@ -1,11 +1,11 @@
-const CACHE = 'oraciones-v1-6';
+const CACHE = 'oraciones-v1-8';
 const FILES = [
   './',
   'index.html',
-  'styles.css?v=1.6',
-  'enhancements.css?v=1.6',
-  'contenido.js?v=1.6',
-  'app.js?v=1.6',
+  'styles.css?v=1.8',
+  'enhancements.css?v=1.8',
+  'contenido.js?v=1.8',
+  'app.js?v=1.8',
   'manifest.webmanifest',
   'icons/icon.svg'
 ];
