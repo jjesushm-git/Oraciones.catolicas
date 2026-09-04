@@ -6,6 +6,8 @@ Aplicación web progresiva (PWA) para Android, celular y computadora.
 
 Abra `dist/contenido.js`. Ahí puede sustituir `texto`, `texto2`, `textopadre` y `textosalve`. Cada día tiene sus propios campos.
 
+Para la Novena de San Benito, abra `dist/contenidoSB.js`. En la sección **CONTENIDO PARTICULAR DE CADA DÍA** solo necesita cambiar `titulo`, `nombreDelDia` y `oracionDelDia`.
+
 ## Publicar gratis en GitHub Pages
 
 1. Cree un repositorio nuevo en GitHub.

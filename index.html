@@ -7,8 +7,8 @@
   <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=2.0">
-  <link rel="stylesheet" href="enhancements.css?v=2.0">
+  <link rel="stylesheet" href="styles.css?v=2.1">
+  <link rel="stylesheet" href="enhancements.css?v=2.1">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -31,11 +31,16 @@
           <span><strong>Novena Desata Nudos</strong><small>Comenzar o continuar</small></span>
           <span aria-hidden="true">›</span>
         </button>
+        <button id="openSanBenito" class="novena-card san-benito-card">
+          <span class="card-icon san-benito-icon">B</span>
+          <span><strong>Novena de San Benito</strong><small>Comenzar o continuar</small></span>
+          <span aria-hidden="true">›</span>
+        </button>
       </section>
 
       <section id="daysView" class="view">
         <div class="section-heading">
-          <p class="eyebrow">NOVENA DESATA NUDOS</p>
+          <p class="eyebrow" id="daysNovenaName">NOVENA DESATA NUDOS</p>
           <h1>Elige el día</h1>
         </div>
         <button id="dateButton" class="date-button"><span>✦</span><span id="dateText">Marcar inicio</span></button>
@@ -48,7 +53,7 @@
           <p class="eyebrow" id="readingLabel">DÍA 1</p>
           <h1 id="readingTitle">Novena Desata Nudos</h1>
           <div id="mainText" class="prayer-text">texto</div>
-          <div class="prayer-actions">
+          <div id="nudosPrayerActions" class="prayer-actions">
             <button id="ourFatherButton" class="primary-button">Padre nuestro</button>
             <button id="hailMaryButton" class="secondary-button">Dios te salve</button>
           </div>
@@ -56,6 +61,11 @@
         </article>
       </section>
     </main>
+    <nav id="sanBenitoFloating" class="floating-prayers hidden" aria-label="Oraciones de San Benito">
+      <button id="sbOurFather">Padrenuestro</button>
+      <button id="sbHailMary">Avemaría</button>
+      <button id="sbGlory">Gloria</button>
+    </nav>
   </div>
 
   <dialog id="prayerDialog" class="modal">
@@ -68,7 +78,7 @@
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <p class="version-label">Oraciones Católicas · Versión 2.0</p>
+    <p class="version-label">Oraciones Católicas · Versión 2.1</p>
     <label>Tamaño de letra <output id="fontSizeOutput">18 px</output></label>
     <input id="fontSize" type="range" min="16" max="32" value="18">
     <label for="fontColor">Color del texto</label>
@@ -90,7 +100,8 @@
     <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
     <p id="settingsSaved" class="settings-saved" role="status"></p>
   </dialog>
-  <script src="contenido.js?v=2.0"></script>
-  <script src="app.js?v=2.0"></script>
+  <script src="contenido.js?v=2.1"></script>
+  <script src="contenidoSB.js?v=2.1"></script>
+  <script src="app.js?v=2.1"></script>
 </body>
 </html>

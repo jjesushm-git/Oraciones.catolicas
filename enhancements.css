@@ -132,6 +132,74 @@
   font-family:Arial,sans-serif;
 }
 
+.san-benito-card{
+  margin-top:14px;
+}
+
+.san-benito-icon{
+  font-family:Georgia,serif;
+  font-size:24px;
+}
+
+.prayer-emphasis{
+  padding:.85rem 1rem;
+  color:#174d37;
+  font-style:italic;
+  text-align:justify;
+  background:#edf3df;
+  border-left:4px solid #d5ad49;
+  border-radius:0 10px 10px 0;
+}
+
+.prayer-list-item{
+  position:relative;
+  margin:.35rem 0!important;
+  padding-left:1.4rem;
+  color:#174d37;
+  font-weight:700;
+}
+
+.prayer-list-item::before{
+  content:"✦";
+  position:absolute;
+  left:0;
+  color:#c3922f;
+  font-size:.75em;
+}
+
+.floating-prayers{
+  position:fixed;
+  z-index:8;
+  left:50%;
+  bottom:max(12px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+  width:min(calc(100% - 24px),720px);
+  padding:7px;
+  border:1px solid #d5ad49;
+  border-radius:16px;
+  background:rgba(255,250,240,.96);
+  box-shadow:0 8px 28px #082b2055;
+  backdrop-filter:blur(10px);
+}
+
+.floating-prayers button{
+  min-height:46px;
+  padding:8px 5px;
+  border:1px solid #b58b32;
+  border-radius:10px;
+  color:#fff;
+  font-size:.84rem;
+  font-weight:700;
+  background:linear-gradient(180deg,#176044,#0d422d);
+}
+
+#readingView{
+  padding-bottom:110px;
+}
+
 @media(max-width:420px){
   .reading-card{
     padding:22px 17px;
@@ -139,5 +207,13 @@
 
   .prayer-text{
     line-height:1.7;
+  }
+
+  .floating-prayers{
+    width:calc(100% - 16px);
+  }
+
+  .floating-prayers button{
+    font-size:.78rem;
   }
 }
