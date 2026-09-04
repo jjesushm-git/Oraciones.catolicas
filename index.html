@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d422d">
+  <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Oraciones Católicas</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button id="backButton" class="icon-button hidden" aria-label="Regresar">←</button>
+      <div class="brand"><span class="brand-mark">✦</span><span>Oraciones Católicas</span></div>
+      <button id="settingsButton" class="icon-button" aria-label="Ajustes">⚙</button>
+    </header>
+
+    <main>
+      <section id="homeView" class="view active">
+        <div class="welcome-card">
+          <p class="eyebrow">ORACIÓN Y ESPERANZA</p>
+          <h1>Oraciones Católicas</h1>
+          <p>Un momento de fe, día a día.</p>
+        </div>
+        <button id="openNovena" class="novena-card">
+          <span class="card-icon">✦</span>
+          <span><strong>Novena Desata Nudos</strong><small>Comenzar o continuar</small></span>
+          <span aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section id="daysView" class="view">
+        <div class="section-heading">
+          <p class="eyebrow">NOVENA DESATA NUDOS</p>
+          <h1>Elige el día</h1>
+        </div>
+        <button id="dateButton" class="date-button"><span>✦</span><span id="dateText">Marcar inicio</span></button>
+        <div class="progress-row"><span id="progressText">0 de 9 completados</span><button id="clearChecks">Desmarcar todas</button></div>
+        <div id="dayList" class="day-list"></div>
+      </section>
+
+      <section id="readingView" class="view">
+        <article class="reading-card">
+          <p class="eyebrow" id="readingLabel">DÍA 1</p>
+          <h1 id="readingTitle">Novena Desata Nudos</h1>
+          <div id="mainText" class="prayer-text">texto</div>
+          <div class="prayer-actions">
+            <button id="ourFatherButton" class="primary-button">Padre nuestro</button>
+            <button id="hailMaryButton" class="secondary-button">Dios te salve</button>
+          </div>
+          <div class="continuation"><span></span><p>texto2</p><span></span></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="prayerDialog" class="modal">
+    <div class="modal-head"><h2 id="modalTitle"></h2><button class="close-button" aria-label="Cerrar">×</button></div>
+    <div id="modalText" class="prayer-text"></div>
+    <div id="counter" class="counter hidden">
+      <button id="counterPrev" aria-label="Anterior">‹</button><strong id="counterValue">1</strong><button id="counterNext" aria-label="Siguiente">›</button>
+    </div>
+  </dialog>
+
+  <dialog id="settingsDialog" class="modal settings-modal">
+    <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
+    <label>Tamaño de letra <output id="fontSizeOutput">18 px</output></label>
+    <input id="fontSize" type="range" min="16" max="32" value="18">
+    <label for="fontColor">Color del texto</label>
+    <div class="color-row"><input id="fontColor" type="color" value="#34252a"><button id="resetColor">Restablecer</button></div>
+    <label for="fontFamily">Tipografía</label>
+    <select id="fontFamily">
+      <option value="Georgia, serif">Clásica</option>
+      <option value="Arial, sans-serif">Arial</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+    </select>
+  </dialog>
+  <script src="contenido.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
