@@ -123,72 +123,72 @@ const DIAS_NOVENA = [
   {
     titulo: `Día 2 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Segundo Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”El ángel le respondió; El Espíritu Santo descenderá sobre ti y el poder del Altísimo te cubrirá con su sombra. Por eso el niño será Santo y será llamado Hijo de Dios." (Lc 1, 21)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `Es Dios, Espíritu Santo, el que fecundo el vientre purísimo de María para que su Hijo, Nuestro Señor Jesucristo, naciera como hombre. Debido al pecado original es que no tenemos la posibilidad de nacer santos; pero desde el mismo momento en el que somos bautizados, acto por el cual se nos libra del pecado original, nuestro objetivo debe y tiene que ser el alcanzar la santidad, es decir , estar junto a Jesús en la vida eterna.`
   },
 
   // -------------------- DÍA 3 --------------------
   {
     titulo: `Día 3 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Tercer Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Maria dijo entonces: yo soy la servidora del Señor, que se cumpla en mi lo que has dicho. Y el ángel se alejo". (Lc 1, 38)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `Debemos tratar de imitar la actitud de servicio de María. Es necesario que estemos con aquellas personas que tienen la necesidad de la Palabra de Dios, la que puede ser transmitida también con los pequeños actos buenos que realizamos cotidianamente.`
   },
 
   // -------------------- DÍA 4 --------------------
   {
     titulo: `Día 4 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Cuarto Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Vayamos a Belén y veamos lo que ha sucedido... fueron rápidamente y encontraron a María y al recién nacido acostado en el pesebre. Al verlo contaron lo que había oído decir de este niño... mientras tanto, María conservaba estas cosas y las meditaba en su corazón." (Lc 2, 15-19)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `Es nuestra misión como cristianos y como miembros de una misma Iglesia, el difundir a todo el mundo la Buena Noticia del nacimiento de Nuestro Señor Jesucristo. Para esto debemos alimentarnos permanentemente de su palabra en la Santa Misa y, al igual que María, guardarla y meditarla en nuestro corazón.`
   },
 
   // -------------------- DÍA 5 --------------------
   {
     titulo: `Día 5 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Quinto Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Su padre y su madre estaban admirados por lo que oían decir de Jesús. El anciano Simeón, después de bendecirlos, dijo a María, la madre: “Este niño será causa de caída y elevación para muchos en Israel; será signo de contradicción, y a ti mismo una espada te atravesara el corazón."(Lc 2, 33-35)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `María, siendo Madre de Cristo, siempre hizo lo que Él le dijo. Imitemos permanentemente su obediencia a la voluntad de Dios y escuchémoslo día a día desde el Evangelio donde Jesús nos dice que quiere que hagamos.`
   },
 
   // -------------------- DÍA 6 --------------------
   {
     titulo: `Día 6 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Sexto Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Jesús le respondió: Mujer, ¿qué tenemos que ver nosotros? Mi hora no ha llegado todavía. Pero su madre dijo a los sirvientes: Hagan todo lo que Él les diga." (Jn 2, 4-5)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: ``
   },
 
   // -------------------- DÍA 7 --------------------
   {
     titulo: `Día 7 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Séptimo Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Pidan y se les dará, busquen y encontraran, llamen y se les abrirá. Porque todo el que pide recibe, el que busca encuentra; y al que llame se le abrirá."(Mt 7, 7-8)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `La única manera de entablar un dialogo con Cristo o con María es a través de la oración. La oración hecha con fe es el arma más poderosa para luchar contra las confusiones con que nos hostiga el que es nuestro enemigo. No olvidemos que Dios nos escucha siempre, pero a veces no nos da lo que pedimos sino lo que verdaderamente necesitamos.`
   },
 
   // -------------------- DÍA 8 --------------------
   {
     titulo: `Día 8 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Octavo Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Al ver a la madre y cerca de ella al discípulo a quien él amaba, Jesús le dijo: Mujer aquí tienes a tu hijo. Luego dijo al discípulo: Aquí tienes a tu madre, Y desde aquel momento, el discípulo la recibió en su casa." (Jn 19, 26-27)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `Tanto es el amor que nos tiene Jesús, que antes de morir nos dejó a María, su propia madre, para que nos cuidara y nos guiara por el camino que Dios preparo para cada uno de nosotros.`
   },
 
   // -------------------- DÍA 9 --------------------
   {
     titulo: `Día 9 Novena de la Virgen Desatanudos`,
     nombreDelDia: `Noveno Día:`,
-    cita: `“Ella dará a luz un hijo, a quien pondrás el nombre de Jesús, porque el salvara a su pueblo de todos sus pecados”. (Mt 1, 21)`,
+    cita: `”Los apóstoles, íntimamente unidos, se dedicaban a la oración en compañía de algunas mujeres; de María, la madre de Jesús....” y “ al llegar el día de Pentecostés, todos quedaron llenos del Espíritu Santo". (Hch 1, 14 y 2, 1.4)`,
     tituloReflexion: `Breve reflexión:`,
-    reflexion: `Jesús es el gran desatador de nuestros pecados (nudos); pero también la Virgen María es la que le dio su carne y su sangre para que hecho hombre pudiera salvarnos del pecado y de la muerte. Dios se valió de una mujer para salvarnos; también se quiere valer de nosotros, como instrumentos para que su Hijo Jesús nos siga salvando.`
+    reflexion: `El Padre nos envía en la fiesta de Pentecostés al Espíritu Santo para que obtengamos la fuerza necesaria para poder transmitir su mensaje. Esa fuerza nos es dada especialmente en el sacramento de la Confirmación junto con sus siete dones y también cada vez que lo pedimos humilde y confiadamente en la oración.`
   }
 
 ];
