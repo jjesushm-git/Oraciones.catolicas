@@ -27,9 +27,14 @@
 }
 
 .modal-gloria{
+  display:none;
   margin-top:1.35rem;
   padding-top:1.15rem;
   border-top:1px solid #d5ad49;
+}
+
+.modal-gloria.visible{
+  display:block;
 }
 
 .modal-amen-line{
