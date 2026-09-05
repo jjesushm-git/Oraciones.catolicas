@@ -7,8 +7,8 @@
   <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=2.1">
-  <link rel="stylesheet" href="enhancements.css?v=2.1">
+  <link rel="stylesheet" href="styles.css?v=3.0">
+  <link rel="stylesheet" href="enhancements.css?v=3.0">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -36,6 +36,28 @@
           <span><strong>Novena de San Benito</strong><small>Comenzar o continuar</small></span>
           <span aria-hidden="true">›</span>
         </button>
+        <button id="openPrayers" class="novena-card prayers-card">
+          <span class="card-icon prayers-icon">†</span>
+          <span><strong>Oraciones</strong><small>Abrir el libro de oraciones</small></span>
+          <span aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section id="prayersView" class="view">
+        <div class="section-heading">
+          <p class="eyebrow">LIBRO DE ORACIONES</p>
+          <h1>Oraciones</h1>
+          <p class="section-description">Elige la oración que deseas leer.</p>
+        </div>
+        <div id="prayersList" class="prayers-list"></div>
+      </section>
+
+      <section id="standalonePrayerView" class="view">
+        <article class="reading-card standalone-prayer-card">
+          <p class="eyebrow">ORACIÓN</p>
+          <h1 id="standalonePrayerTitle">Caminata de la Encarnación</h1>
+          <div id="standalonePrayerText" class="prayer-text"></div>
+        </article>
       </section>
 
       <section id="daysView" class="view">
@@ -78,7 +100,7 @@
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <p class="version-label">Oraciones Católicas · Versión 2.1</p>
+    <p class="version-label">Oraciones Católicas · Versión 3.0</p>
     <label>Tamaño de letra <output id="fontSizeOutput">18 px</output></label>
     <input id="fontSize" type="range" min="16" max="32" value="18">
     <label for="fontColor">Color del texto</label>
@@ -100,8 +122,9 @@
     <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
     <p id="settingsSaved" class="settings-saved" role="status"></p>
   </dialog>
-  <script src="contenido.js?v=2.1"></script>
-  <script src="contenidoSB.js?v=2.1"></script>
-  <script src="app.js?v=2.1"></script>
+  <script src="contenido.js?v=3.0"></script>
+  <script src="contenidoSB.js?v=3.0"></script>
+  <script src="contenidoOraciones.js?v=3.0"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>

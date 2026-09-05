@@ -1,7 +1,9 @@
 const views={
   home:document.querySelector('#homeView'),
   days:document.querySelector('#daysView'),
-  reading:document.querySelector('#readingView')
+  reading:document.querySelector('#readingView'),
+  prayers:document.querySelector('#prayersView'),
+  standalone:document.querySelector('#standalonePrayerView')
 };
 const $=selector=>document.querySelector(selector);
 const backButton=$('#backButton');
@@ -105,6 +107,11 @@ function formatPrayerText(text){
   lines.forEach((raw,index)=>{
     const line=raw.trim();
     if(!line){flush();return}
+    if(line==='----------'){
+      flush();
+      parts.push('<div class="prayer-separator" aria-hidden="true"><span>✦</span></div>');
+      return;
+    }
     const isMain=index===0&&/^Día\s+\d+/i.test(line);
     const isHeading=/:$/.test(line)||/^Acto de contrición/i.test(line)||/^Breve reflexión/i.test(line)||/^Oración (preparatoria|final)/i.test(line)||/^(Primer|Segundo|Tercer|Cuarto|Quinto|Sexto|Séptimo|Octavo|Noveno) día de la Novena/i.test(line);
     const isEmphasis=/^\*.*\*$/.test(line);
@@ -156,13 +163,35 @@ function updateCounter(){
   if(gloria)gloria.classList.toggle('visible',counterValue===10);
 }
 
-function openPrayer(title,text,hasCounter=false){
+function openPrayer(title,text,hasCounter=false,structured=false){
   $('#modalTitle').textContent=title;
-  $('#modalText').innerHTML=formatModalPrayer(text);
+  $('#modalText').innerHTML=structured?formatPrayerText(text):formatModalPrayer(text);
   $('#counter').classList.toggle('hidden',!hasCounter);
   counterValue=1;
   updateCounter();
   $('#prayerDialog').showModal();
+}
+
+function renderGeneralPrayers(){
+  $('#prayersList').innerHTML=ORDEN_ORACIONES.map(id=>{
+    const prayer=ORACIONES_GENERALES[id];
+    return `<button class="prayer-menu-button" data-prayer="${id}"><span>${escapeHtml(prayer.titulo)}</span><span aria-hidden="true">›</span></button>`;
+  }).join('');
+  document.querySelectorAll('[data-prayer]').forEach(button=>{
+    button.onclick=()=>openGeneralPrayer(button.dataset.prayer);
+  });
+}
+
+function openGeneralPrayer(id,addHistory=true){
+  const prayer=ORACIONES_GENERALES[id];
+  if(!prayer)return;
+  if(prayer.paginaCompleta){
+    $('#standalonePrayerTitle').textContent=prayer.titulo;
+    $('#standalonePrayerText').innerHTML=formatPrayerText(prayer.texto);
+    showView('standalone',addHistory,{prayerId:id});
+    return;
+  }
+  openPrayer(prayer.titulo,prayer.texto,false,true);
 }
 
 function paintSettings(values){
@@ -196,6 +225,19 @@ function updateDateDisplay(){
 
 function restoreNavigation(state){
   if(!state?.view)return;
+  if(state.view==='home'){
+    showView('home',false);
+    return;
+  }
+  if(state.view==='prayers'){
+    renderGeneralPrayers();
+    showView('prayers',false);
+    return;
+  }
+  if(state.view==='standalone'){
+    openGeneralPrayer(state.prayerId||'caminataEncarnacion',false);
+    return;
+  }
   prepareNovena(state.novena||'nudos');
   if(state.view==='reading')openDay(state.day||1,false);
   else showView(state.view,false);
@@ -203,6 +245,10 @@ function restoreNavigation(state){
 
 $('#openNovena').onclick=()=>selectNovena('nudos');
 $('#openSanBenito').onclick=()=>selectNovena('sanBenito');
+$('#openPrayers').onclick=()=>{
+  renderGeneralPrayers();
+  showView('prayers');
+};
 backButton.onclick=()=>history.back();
 $('#clearChecks').onclick=()=>{completed.splice(0);saveCompleted()};
 $('#dateButton').onclick=()=>{
@@ -240,6 +286,7 @@ $('#saveSettingsButton').onclick=saveSettings;
 $('#settingsDialog').addEventListener('close',applySettings);
 
 prepareNovena('nudos');
+renderGeneralPrayers();
 applySettings();
 
 if(!sessionStorage.getItem('novenaHistoryReady')){
@@ -265,5 +312,5 @@ window.addEventListener('popstate',event=>{
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=2.1'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=3.0'));
 }

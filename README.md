@@ -8,6 +8,8 @@ Abra `dist/contenido.js`. Ahí puede sustituir `texto`, `texto2`, `textopadre` y
 
 Para la Novena de San Benito, abra `dist/contenidoSB.js`. En la sección **CONTENIDO PARTICULAR DE CADA DÍA** solo necesita cambiar `titulo`, `nombreDelDia` y `oracionDelDia`.
 
+Para modificar Padre Nuestro, Ave María, Credo, Gloria, Comunión Espiritual, Caminata de la Encarnación u Oración al Ángel de la Navidad, abra `dist/contenidoOraciones.js`. Cada oración está identificada por su título y separada del resto para facilitar la edición.
+
 ## Publicar gratis en GitHub Pages
 
 1. Cree un repositorio nuevo en GitHub.
