@@ -10,6 +10,8 @@ Para la Novena de San Benito, abra `dist/contenidoSB.js`. En la sección **CONTE
 
 Para modificar Padre Nuestro, Ave María, Credo, Gloria, Comunión Espiritual, Caminata de la Encarnación u Oración al Ángel de la Navidad, abra `dist/contenidoOraciones.js`. Cada oración está identificada por su título y separada del resto para facilitar la edición.
 
+Para modificar el Rosario Mariano, abra `dist/contenidoRosario.js`. El archivo separa claramente el **inicio común**, los **misterios gozosos, dolorosos, gloriosos y luminosos**, la **letanía**, las **jaculatorias** y las **oraciones finales**.
+
 ## Publicar gratis en GitHub Pages
 
 1. Cree un repositorio nuevo en GitHub.

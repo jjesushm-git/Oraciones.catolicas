@@ -1,13 +1,14 @@
-const CACHE = 'oraciones-v3-0';
+const CACHE = 'oraciones-v4-0';
 const FILES = [
   './',
   'index.html',
-  'styles.css?v=3.0',
-  'enhancements.css?v=3.0',
-  'contenido.js?v=3.0',
-  'contenidoSB.js?v=3.0',
-  'contenidoOraciones.js?v=3.0',
-  'app.js?v=3.0',
+  'styles.css?v=4.0',
+  'enhancements.css?v=4.0',
+  'contenido.js?v=4.0',
+  'contenidoSB.js?v=4.0',
+  'contenidoOraciones.js?v=4.0',
+  'contenidoRosario.js?v=4.0',
+  'app.js?v=4.0',
   'manifest.webmanifest',
   'icons/icon.svg'
 ];

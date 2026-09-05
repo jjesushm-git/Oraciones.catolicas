@@ -7,8 +7,8 @@
   <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=3.0">
-  <link rel="stylesheet" href="enhancements.css?v=3.0">
+  <link rel="stylesheet" href="styles.css?v=4.0">
+  <link rel="stylesheet" href="enhancements.css?v=4.0">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -26,6 +26,11 @@
           <h1>Oraciones Católicas</h1>
           <p>Un momento de fe, día a día.</p>
         </div>
+        <button id="openRosary" class="novena-card rosary-card">
+          <span class="card-icon rosary-icon">R</span>
+          <span><strong>Rosario</strong><small>Misterios correspondientes a hoy</small></span>
+          <span aria-hidden="true">›</span>
+        </button>
         <button id="openNovena" class="novena-card">
           <span class="card-icon">✦</span>
           <span><strong>Novena Desata Nudos</strong><small>Comenzar o continuar</small></span>
@@ -41,6 +46,37 @@
           <span><strong>Oraciones</strong><small>Abrir el libro de oraciones</small></span>
           <span aria-hidden="true">›</span>
         </button>
+      </section>
+
+      <section id="rosaryView" class="view">
+        <div class="section-heading">
+          <p class="eyebrow">ROSARIO MARIANO</p>
+          <h1>Rosario de hoy</h1>
+        </div>
+        <div class="rosary-today-card">
+          <span class="rosary-today-mark">✦</span>
+          <p id="rosaryWeekday">Hoy es lunes</p>
+          <h2 id="rosaryMysteryToday">Misterios gozosos</h2>
+          <p>La aplicación seleccionó los misterios correspondientes al día.</p>
+        </div>
+        <button id="startRosary" class="start-rosary-button">
+          <span>Rosario María · Inicio</span>
+          <span aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <section id="rosaryReadingView" class="view">
+        <article class="reading-card rosary-reading-card">
+          <p class="eyebrow" id="rosaryReadingDay">LUNES</p>
+          <h1>Rosario Mariano</h1>
+          <div id="rosaryIntro" class="prayer-text rosary-intro"></div>
+          <section class="rosary-mysteries-heading">
+            <p>Los misterios que se van a meditar el día de hoy son:</p>
+            <h2 id="rosaryReadingMystery">MISTERIOS GOZOSOS</h2>
+          </section>
+          <div id="rosaryMysteries" class="rosary-mysteries"></div>
+          <div id="rosaryClosing" class="prayer-text rosary-closing"></div>
+        </article>
       </section>
 
       <section id="prayersView" class="view">
@@ -88,6 +124,11 @@
       <button id="sbHailMary">Avemaría</button>
       <button id="sbGlory">Gloria</button>
     </nav>
+    <nav id="rosaryFloating" class="floating-prayers rosary-floating hidden" aria-label="Oraciones del Rosario">
+      <button id="rosaryOurFather"><span>Padre Nuestro</span></button>
+      <button id="rosaryHailMary"><span>Ave María</span><small id="rosaryAveCounter">‹ 1 ›</small></button>
+      <button id="rosaryJaculatory"><span>Jaculatorias</span></button>
+    </nav>
   </div>
 
   <dialog id="prayerDialog" class="modal">
@@ -100,7 +141,7 @@
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <p class="version-label">Oraciones Católicas · Versión 3.0</p>
+    <p class="version-label">Oraciones Católicas · Versión 4.0</p>
     <label>Tamaño de letra <output id="fontSizeOutput">18 px</output></label>
     <input id="fontSize" type="range" min="16" max="32" value="18">
     <label for="fontColor">Color del texto</label>
@@ -122,9 +163,10 @@
     <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
     <p id="settingsSaved" class="settings-saved" role="status"></p>
   </dialog>
-  <script src="contenido.js?v=3.0"></script>
-  <script src="contenidoSB.js?v=3.0"></script>
-  <script src="contenidoOraciones.js?v=3.0"></script>
-  <script src="app.js?v=3.0"></script>
+  <script src="contenido.js?v=4.0"></script>
+  <script src="contenidoSB.js?v=4.0"></script>
+  <script src="contenidoOraciones.js?v=4.0"></script>
+  <script src="contenidoRosario.js?v=4.0"></script>
+  <script src="app.js?v=4.0"></script>
 </body>
 </html>
