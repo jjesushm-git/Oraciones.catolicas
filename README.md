@@ -1,26 +1,26 @@
-# Oraciones Católicas
+# Oraciones Católicas — Versión 4.1
 
 Aplicación web progresiva (PWA) para Android, celular y computadora.
 
-## Cambiar las oraciones
+## Contenido editable
 
-Abra `dist/contenido.js`. Ahí puede sustituir `texto`, `texto2`, `textopadre` y `textosalve`. Cada día tiene sus propios campos.
+- `contenido.js`: Novena Desata Nudos.
+- `contenidoSB.js`: Novena de San Benito.
+- `contenidoOraciones.js`: libro de oraciones.
+- `contenidoRosario.js`: inicio, misterios, letanía, jaculatorias y cierre del Rosario Mariano.
 
-Para la Novena de San Benito, abra `dist/contenidoSB.js`. En la sección **CONTENIDO PARTICULAR DE CADA DÍA** solo necesita cambiar `titulo`, `nombreDelDia` y `oracionDelDia`.
-
-Para modificar Padre Nuestro, Ave María, Credo, Gloria, Comunión Espiritual, Caminata de la Encarnación u Oración al Ángel de la Navidad, abra `dist/contenidoOraciones.js`. Cada oración está identificada por su título y separada del resto para facilitar la edición.
-
-Para modificar el Rosario Mariano, abra `dist/contenidoRosario.js`. El archivo separa claramente el **inicio común**, los **misterios gozosos, dolorosos, gloriosos y luminosos**, la **letanía**, las **jaculatorias** y las **oraciones finales**.
+Los archivos de contenido están separados por secciones y contienen indicaciones para facilitar su edición.
 
 ## Publicar gratis en GitHub Pages
 
 1. Cree un repositorio nuevo en GitHub.
-2. Suba **el contenido de la carpeta `dist`** a la raíz del repositorio.
+2. Suba todos los archivos y la carpeta `icons` incluidos en este paquete a la raíz del repositorio.
 3. Entre a **Settings → Pages**.
 4. En **Build and deployment**, seleccione **Deploy from a branch**.
-5. Elija la rama **main**, carpeta **/(root)** y pulse **Save**.
+5. Elija la rama **main**, la carpeta **/(root)** y pulse **Save**.
 6. Espere uno o dos minutos y abra la dirección que muestra GitHub Pages.
 
 ## Instalar en Android
 
-Abra la dirección publicada con Google Chrome. Pulse el menú de tres puntos y elija **Instalar aplicación** o **Agregar a pantalla principal**.
+Abra la aplicación publicada con Google Chrome. Pulse el menú de tres puntos y elija **Instalar aplicación** o **Agregar a pantalla principal**.
+

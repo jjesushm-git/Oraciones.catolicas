@@ -47,6 +47,7 @@ function readCompleted(){
 }
 
 function showView(name,addHistory=true,details={}){
+  closeGloriaBubble();
   Object.values(views).forEach(view=>view.classList.remove('active'));
   views[name].classList.add('active');
   currentView=name;
@@ -250,7 +251,13 @@ function renderRosaryReading(){
       <p class="mystery-reading">${escapeHtml(item.lectura)}</p>
       <p class="mystery-prayer-guide">Rezar un Padre Nuestro, diez Ave Marías y las Jaculatorias.</p>
     </section>`).join('');
-  $('#rosaryClosing').innerHTML=`${formatPrayerText(closingBeforeLitany)}${renderLitany()}${formatPrayerText(closingAfterLitany)}`;
+  const closingHtml=formatPrayerText(closingAfterLitany).replace(
+    'un Padre Nuestro, Ave María y Gloria.',
+    'un Padre Nuestro, Ave María y <button id="rosaryGloriaButton" class="inline-gloria-button" type="button">Gloria</button>.'
+  );
+  $('#rosaryClosing').innerHTML=`${formatPrayerText(closingBeforeLitany)}${renderLitany()}${closingHtml}`;
+  const gloriaButton=$('#rosaryGloriaButton');
+  if(gloriaButton)gloriaButton.onclick=openGloriaBubble;
 }
 
 function selectRosary(addHistory=true){
@@ -267,7 +274,12 @@ function startRosary(addHistory=true){
 
 function paintSettings(values){
   const root=document.documentElement;
-  root.style.setProperty('--prayer-size',`${values.size||18}px`);
+  const legacySize=values.size||18;
+  const viewSize=values.viewSize||legacySize;
+  const modalSize=values.modalSize||legacySize;
+  root.style.setProperty('--prayer-size',`${viewSize}px`);
+  root.style.setProperty('--view-size',`${viewSize}px`);
+  root.style.setProperty('--modal-size',`${modalSize}px`);
   root.style.setProperty('--prayer-color',values.color||'#24362d');
   root.style.setProperty('--view-font',values.viewFamily||values.family||'Georgia, serif');
   root.style.setProperty('--modal-font',values.modalFamily||values.family||'Georgia, serif');
@@ -275,8 +287,13 @@ function paintSettings(values){
 
 function applySettings(){
   paintSettings(settings);
-  $('#fontSize').value=settings.size||18;
-  $('#fontSizeOutput').textContent=`${settings.size||18} px`;
+  const legacySize=settings.size||18;
+  const viewSize=settings.viewSize||legacySize;
+  const modalSize=settings.modalSize||legacySize;
+  $('#viewFontSize').value=viewSize;
+  $('#viewFontSizeOutput').textContent=`${viewSize} px`;
+  $('#modalFontSize').value=modalSize;
+  $('#modalFontSizeOutput').textContent=`${modalSize} px`;
   $('#fontColor').value=settings.color||'#24362d';
   $('#viewFontFamily').value=settings.viewFamily||settings.family||'Georgia, serif';
   $('#modalFontFamily').value=settings.modalFamily||settings.family||'Georgia, serif';
@@ -356,17 +373,28 @@ $('#sbGlory').onclick=()=>openPrayer('Gloria',SAN_BENITO_CONTENT.prayers.gloria)
 $('#rosaryOurFather').onclick=()=>{
   rosaryAveCount=1;
   $('#rosaryAveCounter').textContent='‹ 1 ›';
-  openPrayer('Padre Nuestro',ORACIONES_GENERALES.padreNuestro.texto);
+  openPrayer('Padre Nuestro',ORACIONES_GENERALES.padreNuestro.texto,false,true);
 };
-$('#rosaryHailMary').onclick=()=>openPrayer('Ave María',ORACIONES_GENERALES.aveMaria.texto,true,false,rosaryAveCount,'rosary');
+$('#rosaryHailMary').onclick=()=>openPrayer('Ave María',ORACIONES_GENERALES.aveMaria.texto,true,true,rosaryAveCount,'rosary');
 $('#rosaryJaculatory').onclick=()=>openPrayer('Jaculatorias',ROSARIO_CONTENT.jaculatorias,false,true);
+
+function openGloriaBubble(){
+  $('#gloriaBubbleText').innerHTML=formatModalPrayer(SAN_BENITO_CONTENT.prayers.gloria);
+  $('#gloriaBubble').classList.remove('hidden');
+}
+
+function closeGloriaBubble(){
+  $('#gloriaBubble')?.classList.add('hidden');
+}
 
 document.querySelectorAll('.close-button').forEach(button=>button.onclick=()=>button.closest('dialog').close());
 document.querySelectorAll('dialog').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
+$('#closeGloriaBubble').onclick=closeGloriaBubble;
 $('#counterPrev').onclick=()=>{counterValue=Math.max(1,counterValue-1);updateCounter()};
-$('#counterNext').onclick=()=>{counterValue=Math.min(10,counterValue+1);updateCounter()};
+$('#counterNext').onclick=()=>{counterValue=counterValue===10?1:counterValue+1;updateCounter()};
 $('#settingsButton').onclick=()=>{draftSettings={...settings};applySettings();$('#settingsDialog').showModal()};
-$('#fontSize').oninput=event=>{draftSettings.size=Number(event.target.value);$('#fontSizeOutput').textContent=`${draftSettings.size} px`;paintSettings(draftSettings)};
+$('#viewFontSize').oninput=event=>{draftSettings.viewSize=Number(event.target.value);$('#viewFontSizeOutput').textContent=`${draftSettings.viewSize} px`;paintSettings(draftSettings)};
+$('#modalFontSize').oninput=event=>{draftSettings.modalSize=Number(event.target.value);$('#modalFontSizeOutput').textContent=`${draftSettings.modalSize} px`;paintSettings(draftSettings)};
 $('#fontColor').oninput=event=>{draftSettings.color=event.target.value;paintSettings(draftSettings)};
 $('#viewFontFamily').onchange=event=>{draftSettings.viewFamily=event.target.value;paintSettings(draftSettings)};
 $('#modalFontFamily').onchange=event=>{draftSettings.modalFamily=event.target.value;paintSettings(draftSettings)};
@@ -402,5 +430,5 @@ window.addEventListener('popstate',event=>{
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.0'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.1'));
 }
