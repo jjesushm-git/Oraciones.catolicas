@@ -1,4 +1,4 @@
-# Oraciones Católicas — Versión 4.1
+# Oraciones Católicas — Versión 4.2
 
 Aplicación web progresiva (PWA) para Android, celular y computadora.
 
@@ -23,4 +23,3 @@ Los archivos de contenido están separados por secciones y contienen indicacione
 ## Instalar en Android
 
 Abra la aplicación publicada con Google Chrome. Pulse el menú de tres puntos y elija **Instalar aplicación** o **Agregar a pantalla principal**.
-

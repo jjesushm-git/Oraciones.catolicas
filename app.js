@@ -217,6 +217,7 @@ function updateRosaryToday(){
   const mystery=ROSARIO_CONTENT.misterios[currentRosaryDay.misterio];
   $('#rosaryWeekday').textContent=`Hoy es ${currentRosaryDay.dia}`;
   $('#rosaryMysteryToday').textContent=mystery.nombre;
+  $('#startRosary').setAttribute('aria-label',`Hoy es ${currentRosaryDay.dia}. ${mystery.nombre} son los que corresponden para el Rosario Mariano en este día. Abrir Rosario Mariano.`);
 }
 
 function renderLitany(){
@@ -387,9 +388,31 @@ function closeGloriaBubble(){
   $('#gloriaBubble')?.classList.add('hidden');
 }
 
+function stayInApplication(){
+  const dialog=$('#exitDialog');
+  if(dialog.open)dialog.close();
+  history.pushState({view:'home',appGuard:true},'');
+}
+
+function exitApplication(){
+  const dialog=$('#exitDialog');
+  if(dialog.open)dialog.close();
+  sessionStorage.removeItem('novenaHistoryReady');
+  history.back();
+}
+
+function openExitConfirmation(){
+  const dialog=$('#exitDialog');
+  if(!dialog.open)dialog.showModal();
+}
+
 document.querySelectorAll('.close-button').forEach(button=>button.onclick=()=>button.closest('dialog').close());
-document.querySelectorAll('dialog').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
+document.querySelectorAll('dialog:not(#exitDialog)').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
 $('#closeGloriaBubble').onclick=closeGloriaBubble;
+$('#exitCloseButton').onclick=stayInApplication;
+$('#stayInAppButton').onclick=stayInApplication;
+$('#confirmExitButton').onclick=exitApplication;
+$('#exitDialog').addEventListener('cancel',event=>{event.preventDefault();stayInApplication()});
 $('#counterPrev').onclick=()=>{counterValue=Math.max(1,counterValue-1);updateCounter()};
 $('#counterNext').onclick=()=>{counterValue=counterValue===10?1:counterValue+1;updateCounter()};
 $('#settingsButton').onclick=()=>{draftSettings={...settings};applySettings();$('#settingsDialog').showModal()};
@@ -418,17 +441,12 @@ if(!sessionStorage.getItem('novenaHistoryReady')){
 window.addEventListener('popstate',event=>{
   if(event.state?.exitBoundary){
     showView('home',false);
-    if(confirm('¿Quieres cerrar Oraciones Católicas?')){
-      sessionStorage.removeItem('novenaHistoryReady');
-      history.back();
-    }else{
-      history.pushState({view:'home',appGuard:true},'');
-    }
+    openExitConfirmation();
     return;
   }
   restoreNavigation(event.state);
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.1'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.2'));
 }

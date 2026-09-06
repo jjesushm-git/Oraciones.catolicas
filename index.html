@@ -7,8 +7,8 @@
   <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=4.1">
-  <link rel="stylesheet" href="enhancements.css?v=4.1">
+  <link rel="stylesheet" href="styles.css?v=4.2">
+  <link rel="stylesheet" href="enhancements.css?v=4.2">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -57,15 +57,12 @@
           <p class="eyebrow">ROSARIOS</p>
           <h1>Rosarios</h1>
         </div>
-        <div class="rosary-today-card">
+        <button id="startRosary" class="rosary-today-card rosary-option-card" aria-label="Abrir el Rosario Mariano correspondiente al día de hoy">
           <span class="rosary-today-mark">✦</span>
-          <p id="rosaryWeekday">Hoy es lunes</p>
-          <h2 id="rosaryMysteryToday">Misterios gozosos</h2>
-          <p>La aplicación seleccionó los misterios correspondientes al día.</p>
-        </div>
-        <button id="startRosary" class="start-rosary-button">
-          <span>Rosario Mariano - INICIO</span>
-          <span aria-hidden="true">›</span>
+          <span id="rosaryWeekday" class="rosary-day-line">Hoy es lunes</span>
+          <span id="rosaryMysteryToday" class="rosary-option-mystery">Misterios gozosos</span>
+          <span class="rosary-option-description">son los que corresponden para el <strong>Rosario Mariano</strong> en este día.</span>
+          <span class="rosary-option-arrow" aria-hidden="true">›</span>
         </button>
       </section>
 
@@ -137,49 +134,63 @@
 
   <dialog id="prayerDialog" class="modal">
     <div class="modal-head"><h2 id="modalTitle"></h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <div id="modalText" class="prayer-text"></div>
-    <div id="counter" class="counter hidden">
-      <button id="counterPrev" aria-label="Anterior">‹</button><strong id="counterValue">1</strong><button id="counterNext" aria-label="Siguiente">›</button>
+    <div class="modal-scroll prayer-modal-body">
+      <div id="modalText" class="prayer-text"></div>
+      <div id="counter" class="counter hidden">
+        <button id="counterPrev" aria-label="Anterior">‹</button><strong id="counterValue">1</strong><button id="counterNext" aria-label="Siguiente">›</button>
+      </div>
     </div>
   </dialog>
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <p class="version-label">Oraciones Católicas · Versión 4.1</p>
-    <label>Tamaño de letra de las ventanas <output id="viewFontSizeOutput">18 px</output></label>
-    <input id="viewFontSize" type="range" min="16" max="32" value="18">
-    <label>Tamaño de letra de los modales <output id="modalFontSizeOutput">18 px</output></label>
-    <input id="modalFontSize" type="range" min="16" max="32" value="18">
-    <label for="fontColor">Color del texto</label>
-    <div class="color-row"><input id="fontColor" type="color" value="#34252a"><button id="resetColor">Restablecer</button></div>
-    <label for="viewFontFamily">Tipografía de las ventanas</label>
-    <select id="viewFontFamily">
-      <option value="Georgia, serif">Clásica</option>
-      <option value="Arial, sans-serif">Arial</option>
-      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
-      <option value="Verdana, sans-serif">Verdana</option>
-      <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans</option>
-    </select>
-    <label for="modalFontFamily">Tipografía de los modales</label>
-    <select id="modalFontFamily">
-      <option value="Georgia, serif">Clásica</option>
-      <option value="Arial, sans-serif">Arial</option>
-      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
-      <option value="Verdana, sans-serif">Verdana</option>
-      <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans</option>
-    </select>
-    <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
-    <p id="settingsSaved" class="settings-saved" role="status"></p>
+    <div class="modal-scroll settings-body">
+      <p class="version-label">Oraciones Católicas · Versión 4.2</p>
+      <label>Tamaño de letra de las ventanas <output id="viewFontSizeOutput">18 px</output></label>
+      <input id="viewFontSize" type="range" min="16" max="32" value="18">
+      <label>Tamaño de letra de los modales <output id="modalFontSizeOutput">18 px</output></label>
+      <input id="modalFontSize" type="range" min="16" max="32" value="18">
+      <label for="fontColor">Color del texto</label>
+      <div class="color-row"><input id="fontColor" type="color" value="#34252a"><button id="resetColor">Restablecer</button></div>
+      <label for="viewFontFamily">Tipografía de las ventanas</label>
+      <select id="viewFontFamily">
+        <option value="Georgia, serif">Clásica</option>
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+        <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans</option>
+      </select>
+      <label for="modalFontFamily">Tipografía de los modales</label>
+      <select id="modalFontFamily">
+        <option value="Georgia, serif">Clásica</option>
+        <option value="Arial, sans-serif">Arial</option>
+        <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+        <option value="Verdana, sans-serif">Verdana</option>
+        <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans</option>
+      </select>
+      <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
+      <p id="settingsSaved" class="settings-saved" role="status"></p>
+    </div>
+  </dialog>
+  <dialog id="exitDialog" class="modal confirmation-modal">
+    <div class="modal-head"><h2>Salir de la aplicación</h2><button id="exitCloseButton" class="close-button" aria-label="Permanecer en la aplicación">×</button></div>
+    <div class="modal-scroll confirmation-body">
+      <p>¿Quieres cerrar Oraciones Católicas?</p>
+      <div class="confirmation-actions">
+        <button id="stayInAppButton" class="secondary-button">No, regresar</button>
+        <button id="confirmExitButton" class="primary-button">Sí, cerrar</button>
+      </div>
+    </div>
   </dialog>
   <aside id="gloriaBubble" class="gloria-speech-bubble hidden" role="dialog" aria-labelledby="gloriaBubbleTitle">
     <button id="closeGloriaBubble" class="bubble-close" aria-label="Cerrar Gloria">×</button>
     <h2 id="gloriaBubbleTitle">Gloria</h2>
     <div id="gloriaBubbleText" class="prayer-text"></div>
   </aside>
-  <script src="contenido.js?v=4.1"></script>
-  <script src="contenidoSB.js?v=4.1"></script>
-  <script src="contenidoOraciones.js?v=4.1"></script>
-  <script src="contenidoRosario.js?v=4.1"></script>
-  <script src="app.js?v=4.1"></script>
+  <script src="contenido.js?v=4.2"></script>
+  <script src="contenidoSB.js?v=4.2"></script>
+  <script src="contenidoOraciones.js?v=4.2"></script>
+  <script src="contenidoRosario.js?v=4.2"></script>
+  <script src="app.js?v=4.2"></script>
 </body>
 </html>

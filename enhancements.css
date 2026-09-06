@@ -32,6 +32,96 @@
   font-family:var(--modal-font);
 }
 
+.modal{
+  width:min(calc(100% - 28px),680px);
+  max-height:calc(100vh - 80px);
+  max-height:calc(100dvh - 80px);
+  overflow:visible;
+  border:3px solid #d5ad49;
+  border-radius:26px;
+  background:#fffaf1;
+  box-shadow:0 20px 70px #082b2075,inset 0 0 0 1px #fff;
+}
+
+.modal[open]{
+  display:flex;
+  flex-direction:column;
+}
+
+.modal::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  right:54px;
+  bottom:-25px;
+  border-width:24px 8px 0 29px;
+  border-style:solid;
+  border-color:#d5ad49 transparent transparent transparent;
+  transform:rotate(-8deg);
+}
+
+.modal::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  right:57px;
+  bottom:-18px;
+  border-width:19px 5px 0 23px;
+  border-style:solid;
+  border-color:#fffaf1 transparent transparent transparent;
+  transform:rotate(-8deg);
+}
+
+.modal::backdrop{
+  background:#173126a8;
+  backdrop-filter:blur(4px);
+}
+
+.modal-head{
+  position:relative;
+  z-index:2;
+  flex:0 0 auto;
+  padding:18px 16px 7px 28px;
+  color:#0d422d;
+  border:0;
+  background:transparent;
+}
+
+.modal-head h2{
+  color:#0d422d;
+  font-size:clamp(1.45rem,6vw,1.9rem);
+  line-height:1.2;
+}
+
+.modal-head .close-button{
+  display:grid;
+  place-items:center;
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+  color:#0d422d;
+  font-size:28px;
+  background:#e7eedb;
+}
+
+.modal-head .close-button:active{
+  background:#d7e3c9;
+}
+
+.modal-scroll{
+  min-height:0;
+  max-height:calc(100vh - 190px);
+  max-height:calc(100dvh - 190px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-color:#a68b4f #eef2e4;
+  scrollbar-width:thin;
+}
+
+.prayer-modal-body>.prayer-text{
+  padding:12px 28px 22px;
+}
+
 .prayer-text p:not(.amen),
 .modal-prayer-paragraph{
   text-align:justify;
@@ -147,7 +237,48 @@
 }
 
 .settings-modal{
+  padding-bottom:0;
   font-family:Arial,sans-serif;
+}
+
+.settings-body{
+  padding-bottom:22px;
+}
+
+.settings-body>label,
+.settings-body>input,
+.settings-body>select,
+.settings-body>.color-row{
+  display:block;
+  width:calc(100% - 44px);
+  margin-left:22px;
+  margin-right:22px;
+}
+
+.settings-body>label{
+  margin-top:22px;
+  margin-bottom:9px;
+  font-weight:700;
+}
+
+.settings-body output{
+  float:right;
+  color:#0d422d;
+}
+
+.settings-body input[type=range]{
+  accent-color:#0d422d;
+}
+
+.settings-body select{
+  padding:12px;
+  border:1px solid #b8a66e;
+  border-radius:10px;
+  background:#fff;
+}
+
+.settings-body>.color-row{
+  display:flex;
 }
 
 .back-button{
@@ -201,41 +332,54 @@
 
 .rosary-today-card{
   position:relative;
+  display:block;
   overflow:hidden;
+  width:100%;
   margin:0 0 18px;
   padding:26px 22px;
   border:1px solid #c9a142;
   border-radius:20px;
   color:#fff;
+  font-family:var(--view-font);
+  text-align:left;
   background:radial-gradient(circle at 88% 15%,#2c7954,#0d422d 55%,#082b20);
   box-shadow:0 10px 25px #082b2030;
+  cursor:pointer;
+  transition:transform .16s ease,box-shadow .16s ease;
 }
 
-.rosary-today-card p{
+.rosary-today-card:active{
+  transform:translateY(1px);
+  box-shadow:0 5px 15px #082b2035;
+}
+
+.rosary-day-line,
+.rosary-option-mystery,
+.rosary-option-description{
+  display:block;
   position:relative;
   z-index:1;
-  margin:0;
-  line-height:1.5;
 }
 
-.rosary-today-card p:first-of-type{
+.rosary-day-line{
   color:#f4dc98;
   font-size:.9rem;
   font-weight:700;
   letter-spacing:.06em;
 }
 
-.rosary-today-card h2{
-  position:relative;
-  z-index:1;
+.rosary-option-mystery{
   margin:.45rem 0 .7rem;
   color:#fff;
   font:700 clamp(1.35rem,6vw,1.75rem)/1.25 Georgia,serif;
 }
 
-.rosary-today-card p:last-child{
-  max-width:31rem;
+.rosary-option-description{
+  max-width:34rem;
+  padding-right:38px;
   color:#e8f2e9;
+  font-size:1rem;
+  line-height:1.5;
 }
 
 .rosary-today-mark{
@@ -247,26 +391,20 @@
   line-height:1;
 }
 
-.start-rosary-button{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  width:100%;
-  min-height:62px;
-  padding:15px 18px;
-  border:1px solid #d5ad49;
-  border-radius:15px;
-  color:#fff;
-  font-family:var(--view-font);
-  font-size:1.05rem;
-  font-weight:700;
-  background:linear-gradient(180deg,#176044,#0d422d);
-  box-shadow:0 7px 18px #082b2033;
-  cursor:pointer;
-}
-
-.start-rosary-button span:last-child{
+.rosary-option-arrow{
+  position:absolute;
+  z-index:2;
+  right:18px;
+  bottom:19px;
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border:1px solid #f4dc987d;
+  border-radius:50%;
+  color:#f5d477;
   font-size:26px;
+  background:#082b205c;
 }
 
 .rosary-reading-card>h1{
@@ -562,7 +700,7 @@
   z-index:20;
   left:50%;
   bottom:max(96px,calc(78px + env(safe-area-inset-bottom)));
-  width:min(calc(100% - 28px),520px);
+  width:min(calc(100% - 28px),650px);
   padding:22px 48px 20px 22px;
   color:var(--prayer-color);
   border:3px solid #d5ad49;
@@ -601,7 +739,12 @@
 }
 
 .gloria-speech-bubble .prayer-text{
+  max-height:58vh;
+  max-height:min(58dvh,420px);
+  overflow-y:auto;
+  padding-right:8px;
   line-height:1.65;
+  overscroll-behavior:contain;
 }
 
 .gloria-speech-bubble .modal-prayer-paragraph{
@@ -626,12 +769,52 @@
   cursor:pointer;
 }
 
+.confirmation-body{
+  padding:10px 24px 24px;
+}
+
+.confirmation-body p{
+  margin:0 0 20px;
+  color:#24362d;
+  font-size:var(--modal-size);
+  line-height:1.55;
+}
+
+.confirmation-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.confirmation-actions button{
+  min-height:48px;
+}
+
 #readingView,
 #rosaryReadingView{
   padding-bottom:110px;
 }
 
 @media(max-width:420px){
+  .modal{
+    width:calc(100% - 20px);
+    max-height:calc(100vh - 62px);
+    max-height:calc(100dvh - 62px);
+  }
+
+  .modal-head{
+    padding-left:20px;
+  }
+
+  .prayer-modal-body>.prayer-text{
+    padding-left:20px;
+    padding-right:20px;
+  }
+
+  .confirmation-actions{
+    grid-template-columns:1fr;
+  }
+
   .reading-card{
     padding:22px 17px;
   }
