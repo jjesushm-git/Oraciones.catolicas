@@ -7,8 +7,8 @@
   <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=4.5">
-  <link rel="stylesheet" href="enhancements.css?v=4.5">
+  <link rel="stylesheet" href="styles.css?v=4.7">
+  <link rel="stylesheet" href="enhancements.css?v=4.7">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -104,7 +104,7 @@
             <span>Rosario de Difuntos - INICIO</span>
             <span aria-hidden="true">›</span>
           </button>
-          <button id="start46Rosary" class="start-rosary-button upcoming-rosary-button" type="button" disabled>
+          <button id="start46Rosary" class="start-rosary-button" type="button">
             <span>46 Rosario - INICIO</span>
             <span aria-hidden="true">›</span>
           </button>
@@ -122,6 +122,20 @@
           </section>
           <div id="rosaryMysteries" class="rosary-mysteries"></div>
           <div id="rosaryClosing" class="prayer-text rosary-closing"></div>
+        </article>
+      </section>
+
+      <section id="rosary46ReadingView" class="view">
+        <article class="reading-card rosary-reading-card rosary46-reading-card">
+          <p class="eyebrow" id="rosary46ReadingDay">LUNES</p>
+          <h1>Rosario de 46 días</h1>
+          <div id="rosary46Intro" class="prayer-text rosary-intro"></div>
+          <section class="rosary-mysteries-heading">
+            <p>Los misterios que se van a meditar son:</p>
+            <h2 id="rosary46ReadingMystery">MISTERIOS GOZOSOS</h2>
+          </section>
+          <div id="rosary46Mysteries" class="rosary-mysteries"></div>
+          <div id="rosary46Closing" class="prayer-text rosary-closing"></div>
         </article>
       </section>
 
@@ -187,7 +201,7 @@
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <p class="version-label">Oraciones Católicas · Versión 4.5</p>
+    <p class="version-label">Oraciones Católicas · Versión 4.7</p>
     <label>Tamaño de letra de las ventanas <output id="viewFontSizeOutput">18 px</output></label>
     <input id="viewFontSize" type="range" min="16" max="32" value="18">
     <label>Tamaño de letra de los modales <output id="modalFontSizeOutput">18 px</output></label>
@@ -243,10 +257,11 @@
     <h2 id="gloriaBubbleTitle">Gloria</h2>
     <div id="gloriaBubbleText" class="prayer-text"></div>
   </aside>
-  <script src="contenido.js?v=4.5"></script>
-  <script src="contenidoSB.js?v=4.5"></script>
-  <script src="contenidoOraciones.js?v=4.5"></script>
-  <script src="contenidoRosario.js?v=4.5"></script>
-  <script src="app.js?v=4.5"></script>
+  <script src="contenido.js?v=4.7"></script>
+  <script src="contenidoSB.js?v=4.7"></script>
+  <script src="contenidoOraciones.js?v=4.7"></script>
+  <script src="contenidoRosario.js?v=4.7"></script>
+  <script src="contenidoRosario46.js?v=4.7"></script>
+  <script src="app.js?v=4.7"></script>
 </body>
 </html>

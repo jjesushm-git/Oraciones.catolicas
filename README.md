@@ -1,13 +1,12 @@
-# Oraciones Católicas — Versión 4.5
+# Oraciones Católicas — Versión 4.7
 
 Aplicación web progresiva (PWA) para Android, celular y computadora.
 
 ## Novedad de esta versión
 
-- Nuevo botón **Selección de hoy** para recuperar los misterios correspondientes al día.
-- **Selección personal** aparece solamente cuando se eligen misterios diferentes a los de hoy.
-- La pantalla indica los días correspondientes a cada grupo de misterios.
-- La selección manual continúa guardándose durante el día actual y se restablece automáticamente al cambiar de fecha.
+- La letanía del **Rosario de 46 días** muestra cada invocación junto a la respuesta **“Todos: Ruega por nosotros.”**
+- Las invocaciones aparecen en tarjetas ordenadas para facilitar la lectura en celular.
+- El párrafo **“Verdad es…”** se presenta en cursiva y sin negritas.
 
 ## Contenido editable
 
@@ -15,6 +14,7 @@ Aplicación web progresiva (PWA) para Android, celular y computadora.
 - `contenidoSB.js`: Novena de San Benito.
 - `contenidoOraciones.js`: libro de oraciones.
 - `contenidoRosario.js`: inicio, misterios, letanía, jaculatorias y cierre del Rosario Mariano.
+- `contenidoRosario46.js`: inicio, misterios, jaculatorias y cierre del Rosario de 46 días.
 
 Los archivos de contenido están separados por secciones y contienen indicaciones para facilitar su edición.
 

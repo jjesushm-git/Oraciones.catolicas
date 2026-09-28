@@ -564,6 +564,22 @@
   hyphens:auto;
 }
 
+.mystery-offering{
+  margin:.2rem 0 .85rem;
+  padding:.62rem .78rem;
+  border-left:4px solid #d5ad49;
+  border-radius:0 9px 9px 0;
+  color:#174d37;
+  font-size:.9rem;
+  font-weight:700;
+  line-height:1.5;
+  background:#edf3df;
+}
+
+.rosary46-mystery .mystery-reading{
+  font-style:normal;
+}
+
 .mystery-prayer-guide{
   margin:1rem 0 0;
   padding-top:.85rem;
@@ -624,6 +640,19 @@
 .litany-pair p:last-child{
   margin-top:.3rem!important;
   color:#176044;
+}
+
+.litany-response-note{
+  margin:.65rem 0!important;
+  padding:.8rem .9rem;
+  color:#174d37;
+  font-style:italic;
+  font-weight:400;
+  line-height:1.55;
+  text-align:left!important;
+  background:#edf3df;
+  border-left:4px solid #d5ad49;
+  border-radius:0 9px 9px 0;
 }
 
 .rosary-floating button{
@@ -714,6 +743,7 @@
   padding:.85rem 1rem;
   color:#174d37;
   font-style:italic;
+  font-weight:400;
   text-align:justify;
   background:#edf3df;
   border-left:4px solid #d5ad49;
@@ -835,7 +865,8 @@
 }
 
 #readingView,
-#rosaryReadingView{
+#rosaryReadingView,
+#rosary46ReadingView{
   padding-bottom:110px;
 }
 

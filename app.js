@@ -6,7 +6,8 @@ const views={
   prayers:document.querySelector('#prayersView'),
   standalone:document.querySelector('#standalonePrayerView'),
   rosary:document.querySelector('#rosaryView'),
-  rosaryReading:document.querySelector('#rosaryReadingView')
+  rosaryReading:document.querySelector('#rosaryReadingView'),
+  rosary46Reading:document.querySelector('#rosary46ReadingView')
 };
 const $=selector=>document.querySelector(selector);
 const backButton=$('#backButton');
@@ -66,7 +67,7 @@ function showView(name,addHistory=true,details={}){
   currentView=name;
   backButton.classList.toggle('hidden',name==='home');
   $('#sanBenitoFloating').classList.toggle('hidden',!(name==='reading'&&currentNovena==='sanBenito'));
-  $('#rosaryFloating').classList.toggle('hidden',name!=='rosaryReading');
+  $('#rosaryFloating').classList.toggle('hidden',!['rosaryReading','rosary46Reading'].includes(name));
   if(addHistory)history.pushState({view:name,novena:currentNovena,...details},'');
   window.scrollTo(0,0);
 }
@@ -170,9 +171,9 @@ function formatPrayerText(text){
       return;
     }
     const isMain=index===0&&/^Día\s+\d+/i.test(line);
-    const isHeading=/:$/.test(line)||/^(INICIO|LETANÍA|ORACIONES FINALES)\.?$/i.test(line)||/^Acto de contrición/i.test(line)||/^Breve reflexión/i.test(line)||/^Oración (preparatoria|final)/i.test(line)||/^(Primer|Segundo|Tercer|Cuarto|Quinto|Sexto|Séptimo|Octavo|Noveno) día de la Novena/i.test(line);
+    const isHeading=/:$/.test(line)||/^(INICIO|LETAN[IÍ]A|JACULATORIAS?|AVE MAR[IÍ]AS|DIOS TE SALVE|ORACIONES FINALES|OREMOS|ORACIÓN)\.?$/i.test(line)||/^Acto de contrición/i.test(line)||/^Breve reflexión/i.test(line)||/^Oración (preparatoria|final)/i.test(line)||/^(Primer|Segundo|Tercer|Cuarto|Quinto|Sexto|Séptimo|Octavo|Noveno) día de la Novena/i.test(line);
     const isEmphasis=/^\*.*\*$/.test(line);
-    const isList=/^[•-]\s*/.test(line);
+    const isList=/^[•*-]\s*/.test(line);
     if(isMain||isHeading){
       flush();
       parts.push(`<${isMain?'h2':'h3'} class="${isMain?'content-title':'content-heading'}">${escapeHtml(line)}</${isMain?'h2':'h3'}>`);
@@ -184,7 +185,7 @@ function formatPrayerText(text){
       parts.push(`<p class="prayer-emphasis">${escapeHtml(line.slice(1,-1))}</p>`);
     }else if(isList){
       flush();
-      parts.push(`<p class="prayer-list-item">${escapeHtml(line.replace(/^[•-]\s*/,''))}</p>`);
+      parts.push(`<p class="prayer-list-item">${escapeHtml(line.replace(/^[•*-]\s*/,''))}</p>`);
     }else{
       paragraph.push(line);
     }
@@ -344,6 +345,64 @@ function renderLitany(){
   </section>`;
 }
 
+function renderRosary46Closing(){
+  const lines=String(ROSARIO_46_CONTENT.cierre||'').replace(/\r/g,'').split('\n');
+  const litanyStart=lines.findIndex(line=>/^LETAN[IÍ]A$/i.test(line.trim()));
+  const responseNote=lines.findIndex((line,index)=>index>litanyStart&&/^A las siguientes invocaciones/i.test(line.trim()));
+  const corderoStart=lines.findIndex((line,index)=>index>responseNote&&/^Guía:\s*Cordero de Dios/i.test(line.trim()));
+  if(litanyStart<0||responseNote<0||corderoStart<0)return formatPrayerText(ROSARIO_46_CONTENT.cierre);
+
+  const makePairs=source=>{
+    const clean=source.map(line=>line.trim()).filter(Boolean);
+    const pairs=[];
+    for(let index=0;index<clean.length;index+=1){
+      const invocation=clean[index].replace(/^Guía:\s*/i,'');
+      const next=clean[index+1]||'';
+      if(/^Todos:\s*/i.test(next)){
+        pairs.push([invocation,next.replace(/^Todos:\s*/i,'')]);
+        index+=1;
+      }else{
+        pairs.push([invocation,'Ruega por nosotros.']);
+      }
+    }
+    return pairs;
+  };
+
+  let litanyEnd=corderoStart;
+  while(litanyEnd<lines.length){
+    const line=lines[litanyEnd].trim();
+    if(!line||/^Guía:\s*/i.test(line)||/^Todos:\s*/i.test(line)){
+      litanyEnd+=1;
+      continue;
+    }
+    break;
+  }
+
+  const openingPairs=makePairs(lines.slice(litanyStart+1,responseNote));
+  const responsePairs=lines.slice(responseNote+1,corderoStart)
+    .map(line=>line.trim())
+    .filter(Boolean)
+    .map(invocation=>[invocation,'Ruega por nosotros.']);
+  const closingPairs=makePairs(lines.slice(corderoStart,litanyEnd));
+  const renderPairs=pairs=>pairs.map(([invocation,response])=>`
+    <div class="litany-pair">
+      <p>${escapeHtml(invocation)}</p>
+      <p><strong>Todos:</strong> ${escapeHtml(response)}</p>
+    </div>`).join('');
+
+  const litanyHtml=`<section class="litany-section rosary46-litany">
+    <h3 class="content-heading">LETANÍA</h3>
+    <div class="litany-list">
+      ${renderPairs(openingPairs)}
+      <p class="litany-response-note">A las siguientes invocaciones respondemos: Ruega por nosotros.</p>
+      ${renderPairs(responsePairs)}
+      ${renderPairs(closingPairs)}
+    </div>
+  </section>`;
+
+  return `${formatPrayerText(lines.slice(0,litanyStart).join('\n'))}${litanyHtml}${formatPrayerText(lines.slice(litanyEnd).join('\n'))}`;
+}
+
 function renderRosaryReading(){
   updateRosaryToday();
   const mystery=ROSARIO_CONTENT.misterios[currentRosaryDay.misterio];
@@ -377,6 +436,30 @@ function startRosary(addHistory=true){
   $('#rosaryAveCounter').textContent='‹ 1 ›';
   renderRosaryReading();
   showView('rosaryReading',addHistory,{rosaryDay:new Date().getDay()});
+}
+
+function renderRosary46Reading(){
+  updateRosaryToday();
+  const mystery=ROSARIO_46_CONTENT.misterios[currentRosaryDay.misterio];
+  $('#rosary46ReadingDay').textContent=currentRosaryDay.manual?'SELECCIÓN PERSONAL':currentRosaryDay.dia.toUpperCase();
+  $('#rosary46ReadingMystery').textContent=mystery.nombre;
+  $('#rosary46Intro').innerHTML=formatPrayerText(ROSARIO_46_CONTENT.inicio);
+  $('#rosary46Mysteries').innerHTML=mystery.items.map((item,index)=>`
+    <section class="rosary-mystery rosary46-mystery">
+      <div class="mystery-number"><span>${index+1}</span><strong>${escapeHtml(item.numero)}</strong></div>
+      <h2>${escapeHtml(item.titulo)}</h2>
+      <p class="mystery-offering">${escapeHtml(item.ofrecimiento)}</p>
+      <p class="mystery-reading">${escapeHtml(item.reflexion)}</p>
+      <p class="mystery-prayer-guide">Rezar un Padre Nuestro, diez Ave Marías y las Jaculatorias.</p>
+    </section>`).join('');
+  $('#rosary46Closing').innerHTML=renderRosary46Closing();
+}
+
+function startRosary46(addHistory=true){
+  rosaryAveCount=1;
+  $('#rosaryAveCounter').textContent='‹ 1 ›';
+  renderRosary46Reading();
+  showView('rosary46Reading',addHistory,{rosaryDay:new Date().getDay(),rosaryKind:'46'});
 }
 
 function paintSettings(values){
@@ -446,6 +529,11 @@ function restoreNavigation(state){
     showView('rosaryReading',false);
     return;
   }
+  if(state.view==='rosary46Reading'){
+    renderRosary46Reading();
+    showView('rosary46Reading',false);
+    return;
+  }
   prepareNovena(state.novena||'nudos');
   if(state.view==='reading')openDay(state.day||1,false);
   else showView(state.view,false);
@@ -457,6 +545,7 @@ $('#openLordDay').onclick=()=>openLordDay();
 $('#openRosary').onclick=()=>selectRosary();
 $('#openMysterySelector').onclick=openMysterySelector;
 $('#startRosary').onclick=()=>startRosary();
+$('#start46Rosary').onclick=()=>startRosary46();
 $('#openPrayers').onclick=()=>{
   renderGeneralPrayers();
   showView('prayers');
@@ -511,10 +600,17 @@ $('#sbGlory').onclick=()=>openPrayer('Gloria',SAN_BENITO_CONTENT.prayers.gloria)
 $('#rosaryOurFather').onclick=()=>{
   rosaryAveCount=1;
   $('#rosaryAveCounter').textContent='‹ 1 ›';
-  openPrayer('Padre Nuestro',ORACIONES_GENERALES.padreNuestro.texto,false,true);
+  const prayer=currentView==='rosary46Reading'?ROSARIO_46_CONTENT.padreNuestro:ORACIONES_GENERALES.padreNuestro.texto;
+  openPrayer('Padre Nuestro',prayer,false,true);
 };
-$('#rosaryHailMary').onclick=()=>openPrayer('Ave María',ORACIONES_GENERALES.aveMaria.texto,true,true,rosaryAveCount,'rosary');
-$('#rosaryJaculatory').onclick=()=>openPrayer('Jaculatorias',ROSARIO_CONTENT.jaculatorias,false,true);
+$('#rosaryHailMary').onclick=()=>{
+  const prayer=currentView==='rosary46Reading'?ROSARIO_46_CONTENT.aveMaria:ORACIONES_GENERALES.aveMaria.texto;
+  openPrayer('Ave María',prayer,true,true,rosaryAveCount,'rosary');
+};
+$('#rosaryJaculatory').onclick=()=>{
+  const prayer=currentView==='rosary46Reading'?ROSARIO_46_CONTENT.jaculatorias:ROSARIO_CONTENT.jaculatorias;
+  openPrayer('Jaculatorias',prayer,false,true);
+};
 
 function openGloriaBubble(){
   $('#gloriaBubbleText').innerHTML=formatModalPrayer(SAN_BENITO_CONTENT.prayers.gloria);
@@ -568,5 +664,5 @@ window.addEventListener('popstate',event=>{
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.5'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.7'));
 }
