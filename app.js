@@ -194,6 +194,21 @@ function formatPrayerText(text){
   return parts.join('');
 }
 
+function formatRosary46Text(text){
+  const separated=String(text||'').replace(
+    /([^\n])\s+(Am[eé]n\.?)(?=\s*(?:\n|$))/gim,
+    '$1\n\n$2'
+  );
+  return formatPrayerText(separated);
+}
+
+function renderRosary46Paragraph(text,className){
+  const value=String(text||'').trim();
+  const match=value.match(/^([\s\S]*?)\s+(Am[eé]n\.?)$/i);
+  if(!match)return `<p class="${className}">${escapeHtml(value)}</p>`;
+  return `<p class="${className}">${escapeHtml(match[1].trim())}</p><p class="amen">${escapeHtml(match[2])}</p>`;
+}
+
 function formatModalPrayer(text){
   const clean=String(text||'').replace(/\r/g,'').split('\n').map(line=>line.trim()).filter(Boolean).join(' ');
   return clean.split(/(?=Gloria al Padre)/i).map((section,index)=>{
@@ -227,7 +242,8 @@ function updateCounter(){
 
 function openPrayer(title,text,hasCounter=false,structured=false,initialCounter=1,context=''){
   $('#modalTitle').textContent=title;
-  $('#modalText').innerHTML=structured?formatPrayerText(text):formatModalPrayer(text);
+  const structuredFormatter=currentView==='rosary46Reading'?formatRosary46Text:formatPrayerText;
+  $('#modalText').innerHTML=structured?structuredFormatter(text):formatModalPrayer(text);
   $('#counter').classList.toggle('hidden',!hasCounter);
   counterContext=context;
   counterValue=initialCounter;
@@ -400,7 +416,7 @@ function renderRosary46Closing(){
     </div>
   </section>`;
 
-  return `${formatPrayerText(lines.slice(0,litanyStart).join('\n'))}${litanyHtml}${formatPrayerText(lines.slice(litanyEnd).join('\n'))}`;
+  return `${formatRosary46Text(lines.slice(0,litanyStart).join('\n'))}${litanyHtml}${formatRosary46Text(lines.slice(litanyEnd).join('\n'))}`;
 }
 
 function renderRosaryReading(){
@@ -443,13 +459,13 @@ function renderRosary46Reading(){
   const mystery=ROSARIO_46_CONTENT.misterios[currentRosaryDay.misterio];
   $('#rosary46ReadingDay').textContent=currentRosaryDay.manual?'SELECCIÓN PERSONAL':currentRosaryDay.dia.toUpperCase();
   $('#rosary46ReadingMystery').textContent=mystery.nombre;
-  $('#rosary46Intro').innerHTML=formatPrayerText(ROSARIO_46_CONTENT.inicio);
+  $('#rosary46Intro').innerHTML=formatRosary46Text(ROSARIO_46_CONTENT.inicio);
   $('#rosary46Mysteries').innerHTML=mystery.items.map((item,index)=>`
     <section class="rosary-mystery rosary46-mystery">
       <div class="mystery-number"><span>${index+1}</span><strong>${escapeHtml(item.numero)}</strong></div>
       <h2>${escapeHtml(item.titulo)}</h2>
-      <p class="mystery-offering">${escapeHtml(item.ofrecimiento)}</p>
-      <p class="mystery-reading">${escapeHtml(item.reflexion)}</p>
+      ${renderRosary46Paragraph(item.ofrecimiento,'mystery-offering')}
+      ${renderRosary46Paragraph(item.reflexion,'mystery-reading')}
       <p class="mystery-prayer-guide">Rezar un Padre Nuestro, diez Ave Marías y las Jaculatorias.</p>
     </section>`).join('');
   $('#rosary46Closing').innerHTML=renderRosary46Closing();
@@ -664,5 +680,5 @@ window.addEventListener('popstate',event=>{
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.7'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.8.1'));
 }

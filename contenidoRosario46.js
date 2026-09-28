@@ -13,7 +13,7 @@ const ROSARIO_46_CONTENT = {
 
 Todos: Sin pecado concebida
 
-Todos: Por la señal + de la Santa Cruz, de nuestros + enemigos líbranos, + Señor Dios nuestro. En el nombre del Padre, + y del Hijo + y del Espíritu + Santo. Amén.
+Todos: Por la señal de la Santa Cruz, de nuestros enemigos líbranos, Señor Dios nuestro. En el nombre del Padre, y del Hijo y del Espíritu Santo. Amén.
 
 Guía: Señor mío Jesucristo,
 
@@ -470,5 +470,5 @@ Guía: Ave María Purísima (3)
 
 Todos: Sin pecado concebida.
 
-Todos: Por la señal + de la Santa Cruz, de nuestros + enemigos líbranos, + Señor Dios nuestro. En el nombre del Padre, + y del Hijo + y del Espíritu + Santo. Amén`
+Todos: Por la señal de la Santa Cruz, de nuestros enemigos líbranos, Señor Dios nuestro. En el nombre del Padre, y del Hijo y del Espíritu Santo. Amén`
 };

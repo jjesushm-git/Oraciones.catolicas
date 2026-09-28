@@ -1,12 +1,12 @@
-# Oraciones Católicas — Versión 4.7
+# Oraciones Católicas — Versión 4.8.1
 
 Aplicación web progresiva (PWA) para Android, celular y computadora.
 
 ## Novedad de esta versión
 
-- La letanía del **Rosario de 46 días** muestra cada invocación junto a la respuesta **“Todos: Ruega por nosotros.”**
-- Las invocaciones aparecen en tarjetas ordenadas para facilitar la lectura en celular.
-- El párrafo **“Verdad es…”** se presenta en cursiva y sin negritas.
+- Se eliminaron los símbolos **+** de la oración de la señal de la cruz.
+- La corrección se aplicó tanto al inicio como al final de **Los 46 Rosarios**.
+- Se conserva el formato separado de todos los **Amén.** y el resto del contenido.
 
 ## Contenido editable
 
