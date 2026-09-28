@@ -202,13 +202,28 @@
 .rosary-today-card{
   position:relative;
   overflow:hidden;
+  width:100%;
   margin:0 0 18px;
   padding:26px 22px;
   border:1px solid #c9a142;
   border-radius:20px;
   color:#fff;
+  font:inherit;
+  text-align:left;
   background:radial-gradient(circle at 88% 15%,#2c7954,#0d422d 55%,#082b20);
   box-shadow:0 10px 25px #082b2030;
+  cursor:pointer;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+
+.rosary-today-card:active{
+  transform:translateY(1px) scale(.995);
+  box-shadow:0 6px 16px #082b2038;
+}
+
+.rosary-today-card:focus-visible{
+  outline:3px solid #f5d477;
+  outline-offset:3px;
 }
 
 .rosary-today-card p{
@@ -233,9 +248,20 @@
   font:700 clamp(1.35rem,6vw,1.75rem)/1.25 Georgia,serif;
 }
 
-.rosary-today-card p:last-child{
+.rosary-today-card p:last-of-type{
   max-width:31rem;
   color:#e8f2e9;
+}
+
+.rosary-selector-hint{
+  position:relative;
+  z-index:1;
+  display:inline-block;
+  margin-top:.75rem;
+  color:#f5d477;
+  font-size:.86rem;
+  font-weight:700;
+  line-height:1.4;
 }
 
 .rosary-today-mark{
@@ -267,6 +293,188 @@
 
 .start-rosary-button span:last-child{
   font-size:26px;
+}
+
+.rosary-start-list{
+  display:grid;
+  gap:12px;
+}
+
+.upcoming-rosary-button{
+  color:#315445;
+  background:linear-gradient(145deg,#fffdf3,#edf3dc);
+  box-shadow:inset 4px 0 #d5ad49,0 6px 16px #082b2012;
+}
+
+.upcoming-rosary-button:disabled{
+  cursor:default;
+  opacity:.82;
+}
+
+.upcoming-rosary-button span:last-child{
+  color:#b38a35;
+}
+
+.mystery-selector-body{
+  padding:22px;
+}
+
+.today-mystery-option{
+  display:grid;
+  grid-template-columns:42px 1fr;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  min-height:70px;
+  padding:13px 15px;
+  color:#174d37;
+  border:2px solid #d5ad49;
+  border-radius:15px;
+  font-family:var(--modal-font);
+  text-align:left;
+  background:linear-gradient(145deg,#fff8dc,#e7efd8);
+  box-shadow:0 5px 14px #082b201a;
+  cursor:pointer;
+  transition:transform .16s ease,background .16s ease,color .16s ease;
+}
+
+.today-mystery-icon{
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  color:#f5d477;
+  border:1px solid #d5ad49;
+  border-radius:50%;
+  font-size:20px;
+  background:#0d422d;
+}
+
+.today-mystery-option strong,
+.today-mystery-option small{
+  display:block;
+}
+
+.today-mystery-option strong{
+  font-size:1rem;
+  letter-spacing:.04em;
+}
+
+.today-mystery-option small{
+  margin-top:4px;
+  color:#567063;
+  font-size:.86rem;
+  line-height:1.35;
+}
+
+.today-mystery-option.selected{
+  color:#fff;
+  background:radial-gradient(circle at 90% 10%,#2c7954,#0d422d 60%,#082b20);
+  box-shadow:0 7px 18px #082b203d,inset 4px 0 #f5d477;
+}
+
+.today-mystery-option.selected small{
+  color:#f5dea0;
+}
+
+.today-mystery-option:active{
+  transform:scale(.99);
+}
+
+.today-mystery-option:focus-visible{
+  outline:3px solid #e8c85f;
+  outline-offset:2px;
+}
+
+.mystery-options-separator{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:18px 0 13px;
+  color:#6a765f;
+  font-size:.78rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+.mystery-options-separator::before,
+.mystery-options-separator::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:#d5c58f;
+}
+
+.mystery-options{
+  display:grid;
+  gap:11px;
+}
+
+.mystery-option{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:4px;
+  width:100%;
+  min-height:66px;
+  padding:13px 16px;
+  color:#24362d;
+  border:2px solid #d7c68b;
+  border-radius:14px;
+  font-family:var(--modal-font);
+  text-align:left;
+  background:linear-gradient(145deg,#fffdf3,#edf3dc);
+  box-shadow:0 4px 12px #082b2014;
+  cursor:pointer;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease;
+}
+
+.mystery-option strong{
+  font-size:1rem;
+  letter-spacing:.04em;
+}
+
+.mystery-option span{
+  color:#567063;
+  font-size:.9rem;
+}
+
+.mystery-option:active{
+  transform:scale(.99);
+}
+
+.mystery-option:focus-visible{
+  outline:3px solid #e8c85f;
+  outline-offset:2px;
+}
+
+.mystery-option.selected{
+  color:#fff;
+  border-color:#e4bf55;
+  background:radial-gradient(circle at 90% 10%,#2c7954,#0d422d 60%,#082b20);
+  box-shadow:0 7px 18px #082b203d,inset 4px 0 #f5d477;
+}
+
+.mystery-option.selected span{
+  color:#f5dea0;
+}
+
+.save-mystery-selection{
+  width:100%;
+  margin-top:20px;
+  padding:14px 18px;
+  color:#fff;
+  border:2px solid #d5ad49;
+  border-radius:13px;
+  font-weight:700;
+  background:linear-gradient(180deg,#176044,#0d422d);
+  box-shadow:0 6px 16px #082b2038;
+  cursor:pointer;
+}
+
+.save-mystery-selection:active{
+  transform:translateY(1px);
+  background:#0d422d;
 }
 
 .rosary-reading-card>h1{

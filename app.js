@@ -39,8 +39,18 @@ let rosaryAveCount=1;
 let currentRosaryDay=ROSARIO_POR_DIA[new Date().getDay()];
 let completed=[];
 let draftSettings={};
+let pendingRosaryMystery='';
+let pendingRosaryMode='today';
 
 const LORD_DAY_URL='https://misa.jjesushmalerva.chatgpt.site/';
+const ROSARY_SELECTION_KEY='rosaryMysterySelection';
+const ROSARY_MYSTERY_IDS=['gozosos','dolorosos','gloriosos','luminosos'];
+const ROSARY_MYSTERY_SCHEDULES={
+  gozosos:'Corresponden al lunes y sábado.',
+  dolorosos:'Corresponden al martes y viernes.',
+  gloriosos:'Corresponden al miércoles y domingo.',
+  luminosos:'Corresponden al jueves.'
+};
 
 function readCompleted(){
   try{
@@ -246,11 +256,74 @@ function openGeneralPrayer(id,addHistory=true){
   openPrayer(prayer.titulo,prayer.texto,false,true);
 }
 
+function getTodayKey(){
+  const date=new Date();
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function readRosaryMysterySelection(){
+  try{
+    const selection=JSON.parse(localStorage.getItem(ROSARY_SELECTION_KEY)||'null');
+    if(selection?.date===getTodayKey()&&ROSARY_MYSTERY_IDS.includes(selection.mystery))return selection.mystery;
+    if(selection)localStorage.removeItem(ROSARY_SELECTION_KEY);
+  }catch{
+    localStorage.removeItem(ROSARY_SELECTION_KEY);
+  }
+  return '';
+}
+
+function resolveRosaryDay(){
+  const scheduled=ROSARIO_POR_DIA[new Date().getDay()];
+  const selected=readRosaryMysterySelection();
+  const manual=Boolean(selected&&selected!==scheduled.misterio);
+  if(selected&&!manual)localStorage.removeItem(ROSARY_SELECTION_KEY);
+  return {...scheduled,misterio:manual?selected:scheduled.misterio,manual};
+}
+
 function updateRosaryToday(){
-  currentRosaryDay=ROSARIO_POR_DIA[new Date().getDay()];
+  currentRosaryDay=resolveRosaryDay();
   const mystery=ROSARIO_CONTENT.misterios[currentRosaryDay.misterio];
-  $('#rosaryWeekday').textContent=`Hoy es ${currentRosaryDay.dia}`;
+  const schedule=ROSARY_MYSTERY_SCHEDULES[currentRosaryDay.misterio];
+  const todayMystery=ROSARIO_CONTENT.misterios[ROSARIO_POR_DIA[new Date().getDay()].misterio];
+  $('#rosaryWeekday').textContent=currentRosaryDay.manual?'Selección personal':`Hoy es ${currentRosaryDay.dia}`;
   $('#rosaryMysteryToday').textContent=mystery.nombre;
+  $('#rosaryMysterySchedule').textContent=schedule;
+  $('#todayMysteryDescription').textContent=`Hoy corresponden los ${todayMystery.nombre.toLowerCase()}`;
+  $('#openMysterySelector').setAttribute('aria-label',`${currentRosaryDay.manual?'Selección personal. ':''}${mystery.nombre}. ${schedule} Puedes seleccionar aquí los misterios a meditar.`);
+}
+
+function paintMysteryOptions(){
+  const todaySelected=pendingRosaryMode==='today';
+  $('#selectTodayMystery').classList.toggle('selected',todaySelected);
+  $('#selectTodayMystery').setAttribute('aria-pressed',String(todaySelected));
+  document.querySelectorAll('[data-mystery-option]').forEach(button=>{
+    const selected=pendingRosaryMode==='manual'&&button.dataset.mysteryOption===pendingRosaryMystery;
+    button.classList.toggle('selected',selected);
+    button.setAttribute('aria-pressed',String(selected));
+  });
+}
+
+function openMysterySelector(){
+  updateRosaryToday();
+  pendingRosaryMystery=currentRosaryDay.misterio;
+  pendingRosaryMode=currentRosaryDay.manual?'manual':'today';
+  paintMysteryOptions();
+  $('#mysterySelectorDialog').showModal();
+}
+
+function saveRosaryMysterySelection(){
+  if(!ROSARY_MYSTERY_IDS.includes(pendingRosaryMystery))return;
+  const scheduled=ROSARIO_POR_DIA[new Date().getDay()].misterio;
+  if(pendingRosaryMode==='today'||pendingRosaryMystery===scheduled){
+    localStorage.removeItem(ROSARY_SELECTION_KEY);
+  }else{
+    localStorage.setItem(ROSARY_SELECTION_KEY,JSON.stringify({
+      mystery:pendingRosaryMystery,
+      date:getTodayKey()
+    }));
+  }
+  updateRosaryToday();
+  $('#mysterySelectorDialog').close();
 }
 
 function renderLitany(){
@@ -382,6 +455,7 @@ $('#openNovena').onclick=()=>selectNovena('nudos');
 $('#openSanBenito').onclick=()=>selectNovena('sanBenito');
 $('#openLordDay').onclick=()=>openLordDay();
 $('#openRosary').onclick=()=>selectRosary();
+$('#openMysterySelector').onclick=openMysterySelector;
 $('#startRosary').onclick=()=>startRosary();
 $('#openPrayers').onclick=()=>{
   renderGeneralPrayers();
@@ -396,6 +470,19 @@ $('#lordDayFrame').addEventListener('load',()=>{
 });
 $('#retryLordDay').onclick=()=>loadLordDay(true);
 $('#reloadLordDay').onclick=()=>loadLordDay(true);
+document.querySelectorAll('[data-mystery-option]').forEach(button=>{
+  button.onclick=()=>{
+    pendingRosaryMode='manual';
+    pendingRosaryMystery=button.dataset.mysteryOption;
+    paintMysteryOptions();
+  };
+});
+$('#selectTodayMystery').onclick=()=>{
+  pendingRosaryMode='today';
+  pendingRosaryMystery=ROSARIO_POR_DIA[new Date().getDay()].misterio;
+  paintMysteryOptions();
+};
+$('#saveMysterySelection').onclick=saveRosaryMysterySelection;
 window.addEventListener('offline',()=>{
   if(currentView==='lordDay')loadLordDay();
 });
@@ -481,5 +568,5 @@ window.addEventListener('popstate',event=>{
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.3'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.5'));
 }
