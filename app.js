@@ -1,5 +1,6 @@
 const views={
   home:document.querySelector('#homeView'),
+  lordDay:document.querySelector('#lordDayView'),
   days:document.querySelector('#daysView'),
   reading:document.querySelector('#readingView'),
   prayers:document.querySelector('#prayersView'),
@@ -39,6 +40,8 @@ let currentRosaryDay=ROSARIO_POR_DIA[new Date().getDay()];
 let completed=[];
 let draftSettings={};
 
+const LORD_DAY_URL='https://misa.jjesushmalerva.chatgpt.site/';
+
 function readCompleted(){
   try{
     const value=JSON.parse(localStorage.getItem(NOVENAS[currentNovena].completedKey)||'[]');
@@ -56,6 +59,37 @@ function showView(name,addHistory=true,details={}){
   $('#rosaryFloating').classList.toggle('hidden',name!=='rosaryReading');
   if(addHistory)history.pushState({view:name,novena:currentNovena,...details},'');
   window.scrollTo(0,0);
+}
+
+function setLordDayStatus(message,description='',isError=false){
+  const status=$('#lordDayStatus');
+  const shell=$('#lordDayFrameShell');
+  status.querySelector('strong').textContent=message;
+  status.querySelector('small').textContent=description;
+  status.classList.toggle('is-error',isError);
+  $('#retryLordDay').classList.toggle('hidden',!isError);
+  shell.setAttribute('aria-busy',String(!isError));
+}
+
+function loadLordDay(force=false){
+  const frame=$('#lordDayFrame');
+  const shell=$('#lordDayFrameShell');
+  if(!navigator.onLine){
+    frame.classList.remove('is-loaded');
+    shell.classList.remove('is-loaded');
+    setLordDayStatus('No hay conexión a Internet','Conéctate y pulsa Reintentar.',true);
+    return;
+  }
+  if(!force&&frame.getAttribute('src')===LORD_DAY_URL&&frame.classList.contains('is-loaded'))return;
+  frame.classList.remove('is-loaded');
+  shell.classList.remove('is-loaded');
+  setLordDayStatus('Preparando la misa de hoy','Espera un momento…');
+  frame.src=LORD_DAY_URL;
+}
+
+function openLordDay(addHistory=true){
+  showView('lordDay',addHistory);
+  requestAnimationFrame(()=>loadLordDay());
 }
 
 function prepareNovena(id){
@@ -217,7 +251,6 @@ function updateRosaryToday(){
   const mystery=ROSARIO_CONTENT.misterios[currentRosaryDay.misterio];
   $('#rosaryWeekday').textContent=`Hoy es ${currentRosaryDay.dia}`;
   $('#rosaryMysteryToday').textContent=mystery.nombre;
-  $('#startRosary').setAttribute('aria-label',`Hoy es ${currentRosaryDay.dia}. ${mystery.nombre} son los que corresponden para el Rosario Mariano en este día. Abrir Rosario Mariano.`);
 }
 
 function renderLitany(){
@@ -318,6 +351,10 @@ function restoreNavigation(state){
     showView('home',false);
     return;
   }
+  if(state.view==='lordDay'){
+    openLordDay(false);
+    return;
+  }
   if(state.view==='prayers'){
     renderGeneralPrayers();
     showView('prayers',false);
@@ -343,12 +380,25 @@ function restoreNavigation(state){
 
 $('#openNovena').onclick=()=>selectNovena('nudos');
 $('#openSanBenito').onclick=()=>selectNovena('sanBenito');
+$('#openLordDay').onclick=()=>openLordDay();
 $('#openRosary').onclick=()=>selectRosary();
 $('#startRosary').onclick=()=>startRosary();
 $('#openPrayers').onclick=()=>{
   renderGeneralPrayers();
   showView('prayers');
 };
+$('#lordDayFrame').addEventListener('load',()=>{
+  const frame=$('#lordDayFrame');
+  if(!frame.getAttribute('src'))return;
+  frame.classList.add('is-loaded');
+  $('#lordDayFrameShell').classList.add('is-loaded');
+  $('#lordDayFrameShell').setAttribute('aria-busy','false');
+});
+$('#retryLordDay').onclick=()=>loadLordDay(true);
+$('#reloadLordDay').onclick=()=>loadLordDay(true);
+window.addEventListener('offline',()=>{
+  if(currentView==='lordDay')loadLordDay();
+});
 backButton.onclick=()=>history.back();
 $('#clearChecks').onclick=()=>{completed.splice(0);saveCompleted()};
 $('#dateButton').onclick=()=>{
@@ -388,31 +438,9 @@ function closeGloriaBubble(){
   $('#gloriaBubble')?.classList.add('hidden');
 }
 
-function stayInApplication(){
-  const dialog=$('#exitDialog');
-  if(dialog.open)dialog.close();
-  history.pushState({view:'home',appGuard:true},'');
-}
-
-function exitApplication(){
-  const dialog=$('#exitDialog');
-  if(dialog.open)dialog.close();
-  sessionStorage.removeItem('novenaHistoryReady');
-  history.back();
-}
-
-function openExitConfirmation(){
-  const dialog=$('#exitDialog');
-  if(!dialog.open)dialog.showModal();
-}
-
 document.querySelectorAll('.close-button').forEach(button=>button.onclick=()=>button.closest('dialog').close());
-document.querySelectorAll('dialog:not(#exitDialog)').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
+document.querySelectorAll('dialog').forEach(dialog=>dialog.onclick=event=>{if(event.target===dialog)dialog.close()});
 $('#closeGloriaBubble').onclick=closeGloriaBubble;
-$('#exitCloseButton').onclick=stayInApplication;
-$('#stayInAppButton').onclick=stayInApplication;
-$('#confirmExitButton').onclick=exitApplication;
-$('#exitDialog').addEventListener('cancel',event=>{event.preventDefault();stayInApplication()});
 $('#counterPrev').onclick=()=>{counterValue=Math.max(1,counterValue-1);updateCounter()};
 $('#counterNext').onclick=()=>{counterValue=counterValue===10?1:counterValue+1;updateCounter()};
 $('#settingsButton').onclick=()=>{draftSettings={...settings};applySettings();$('#settingsDialog').showModal()};
@@ -441,12 +469,17 @@ if(!sessionStorage.getItem('novenaHistoryReady')){
 window.addEventListener('popstate',event=>{
   if(event.state?.exitBoundary){
     showView('home',false);
-    openExitConfirmation();
+    if(confirm('¿Quieres cerrar Oraciones Católicas?')){
+      sessionStorage.removeItem('novenaHistoryReady');
+      history.back();
+    }else{
+      history.pushState({view:'home',appGuard:true},'');
+    }
     return;
   }
   restoreNavigation(event.state);
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.2'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.3'));
 }

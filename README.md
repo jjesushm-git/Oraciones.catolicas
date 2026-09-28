@@ -1,6 +1,13 @@
-# Oraciones Católicas — Versión 4.2
+# Oraciones Católicas — Versión 4.3
 
 Aplicación web progresiva (PWA) para Android, celular y computadora.
+
+## Novedad de esta versión
+
+- Nuevo acceso **Día del Señor** en la primera posición del menú principal.
+- La Santa Misa se abre dentro de la aplicación, sin cambiar a otra ventana ni mostrar una barra de direcciones adicional cuando la PWA está instalada.
+- Incluye transición suave, indicador de carga, recarga y aviso para reintentar cuando no hay conexión.
+- El contenido se obtiene de `https://misa.jjesushmalerva.chatgpt.site/`, por lo que esta sección necesita Internet.
 
 ## Contenido editable
 

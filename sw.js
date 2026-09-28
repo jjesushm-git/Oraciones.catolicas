@@ -1,14 +1,14 @@
-const CACHE = 'oraciones-v4-2';
+const CACHE = 'oraciones-v4-3';
 const FILES = [
   './',
   'index.html',
-  'styles.css?v=4.2',
-  'enhancements.css?v=4.2',
-  'contenido.js?v=4.2',
-  'contenidoSB.js?v=4.2',
-  'contenidoOraciones.js?v=4.2',
-  'contenidoRosario.js?v=4.2',
-  'app.js?v=4.2',
+  'styles.css?v=4.3',
+  'enhancements.css?v=4.3',
+  'contenido.js?v=4.3',
+  'contenidoSB.js?v=4.3',
+  'contenidoOraciones.js?v=4.3',
+  'contenidoRosario.js?v=4.3',
+  'app.js?v=4.3',
   'manifest.webmanifest',
   'icons/icon.svg'
 ];
@@ -30,11 +30,12 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  if (new URL(event.request.url).origin !== self.location.origin) return;
 
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+        if (response.ok) {
           const copy = response.clone();
           caches.open(CACHE).then((cache) => cache.put(event.request, copy));
         }
