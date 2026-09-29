@@ -300,6 +300,34 @@
   gap:12px;
 }
 
+.deceased-start-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+}
+
+.new-deceased-data-button{
+  min-width:116px;
+  padding:10px 13px;
+  border:2px solid #d5ad49;
+  border-radius:15px;
+  color:#174d37;
+  font-family:var(--view-font);
+  font-size:.86rem;
+  font-weight:700;
+  line-height:1.2;
+  background:linear-gradient(145deg,#fff8dc,#e7efd8);
+  box-shadow:0 5px 14px #082b201a;
+  cursor:pointer;
+}
+
+.deceased-saved-summary{
+  margin:-2px 4px 0;
+  color:#567063;
+  font-size:.82rem;
+  line-height:1.4;
+}
+
 .upcoming-rosary-button{
   color:#315445;
   background:linear-gradient(145deg,#fffdf3,#edf3dc);
@@ -477,6 +505,94 @@
   background:#0d422d;
 }
 
+.deceased-setup-body{
+  padding:22px;
+  font-family:var(--modal-font);
+}
+
+.deceased-step{
+  margin:0 0 18px;
+  color:#9a7426;
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.deceased-setup-body label,
+.deceased-question{
+  display:block;
+  margin:0 0 10px;
+  color:#24362d;
+  font-weight:700;
+  line-height:1.45;
+}
+
+#deceasedName{
+  width:100%;
+  min-height:52px;
+  padding:11px 13px;
+  border:2px solid #c9a142;
+  border-radius:12px;
+  color:var(--prayer-color);
+  font-family:var(--modal-font);
+  font-size:var(--modal-size);
+  background:#fffef8;
+  outline:none;
+}
+
+#deceasedName:focus{
+  border-color:#176044;
+  box-shadow:0 0 0 3px #17604422;
+}
+
+.deceased-name-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  min-height:24px;
+  margin-top:6px;
+  color:#80672f;
+  font-size:.78rem;
+}
+
+#deceasedNameError,
+.deceased-gender-error{
+  color:#9a2f2f;
+  font-weight:700;
+}
+
+.deceased-gender-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.deceased-gender-options button{
+  min-height:62px;
+  border:2px solid #d5c58f;
+  border-radius:14px;
+  color:#24362d;
+  font-family:var(--modal-font);
+  font-size:1.05rem;
+  font-weight:800;
+  background:linear-gradient(145deg,#fffdf3,#edf3dc);
+  cursor:pointer;
+}
+
+.deceased-gender-options button.selected{
+  color:#fff;
+  border-color:#e4bf55;
+  background:radial-gradient(circle at 85% 10%,#2c7954,#0d422d 62%,#082b20);
+  box-shadow:0 7px 18px #082b203d,inset 4px 0 #f5d477;
+}
+
+.deceased-gender-error{
+  min-height:20px;
+  margin:9px 0 0;
+  font-size:.82rem;
+}
+
 .rosary-reading-card>h1{
   padding-bottom:.9rem;
   border-bottom:2px solid #d5ad49;
@@ -588,6 +704,82 @@
   font-size:.88rem;
   font-weight:700;
   line-height:1.45;
+}
+
+.deceased-reading-for{
+  display:inline-block;
+  margin:14px 0 0;
+  padding:.48rem .75rem;
+  color:#174d37;
+  border-left:4px solid #d5ad49;
+  border-radius:0 9px 9px 0;
+  font-weight:700;
+  background:#edf3df;
+}
+
+.deceased-mystery>.prayer-text,
+.deceased-mystery>p:not(.mystery-reading):not(.mystery-prayer-guide){
+  text-align:justify;
+}
+
+.deceased-mystery .content-heading{
+  font-size:1.03rem;
+}
+
+.deceased-song-button{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  min-height:54px;
+  margin:1rem 0 .2rem;
+  padding:10px 13px;
+  border:2px solid #d5ad49;
+  border-radius:13px;
+  color:#fff;
+  font-family:var(--view-font);
+  font-weight:700;
+  text-align:left;
+  background:linear-gradient(180deg,#176044,#0d422d);
+  box-shadow:0 5px 14px #082b2030;
+  cursor:pointer;
+}
+
+.deceased-song-number{
+  padding:.28rem .48rem;
+  border-radius:8px;
+  color:#183b2d;
+  font-size:.72rem;
+  text-transform:uppercase;
+  background:#f5d477;
+}
+
+.deceased-song-button span:last-child{
+  color:#f5d477;
+  font-size:1.35rem;
+}
+
+.song-modal-content{
+  padding:.1rem 0;
+}
+
+.song-line,
+.song-chorus{
+  margin:.2rem 0!important;
+  line-height:1.55!important;
+  text-align:left!important;
+}
+
+.song-chorus{
+  margin-top:.85rem!important;
+  color:#176044;
+  font-weight:800;
+}
+
+.song-space{
+  display:block;
+  height:.7rem;
 }
 
 .rosary-closing{
@@ -866,7 +1058,8 @@
 
 #readingView,
 #rosaryReadingView,
-#rosary46ReadingView{
+#rosary46ReadingView,
+#rosaryDeceasedReadingView{
   padding-bottom:110px;
 }
 
@@ -897,6 +1090,16 @@
 
   .mystery-prayer-guide{
     font-size:.82rem;
+  }
+
+  .deceased-start-row{
+    grid-template-columns:minmax(0,1fr) 104px;
+  }
+
+  .new-deceased-data-button{
+    min-width:0;
+    padding:8px;
+    font-size:.78rem;
   }
 }
 

@@ -7,8 +7,8 @@
   <meta name="description" content="Oraciones Católicas, una aplicación instalable para acompañar tu novena.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=4.8.1">
-  <link rel="stylesheet" href="enhancements.css?v=4.8.1">
+  <link rel="stylesheet" href="styles.css?v=4.9">
+  <link rel="stylesheet" href="enhancements.css?v=4.9">
   <title>Oraciones Católicas</title>
 </head>
 <body>
@@ -100,10 +100,14 @@
             <span>Rosario Mariano - INICIO</span>
             <span aria-hidden="true">›</span>
           </button>
-          <button id="startDeceasedRosary" class="start-rosary-button upcoming-rosary-button" type="button" disabled>
-            <span>Rosario de Difuntos - INICIO</span>
-            <span aria-hidden="true">›</span>
-          </button>
+          <div class="deceased-start-row">
+            <button id="startDeceasedRosary" class="start-rosary-button" type="button">
+              <span>Rosario de Difuntos - INICIO</span>
+              <span aria-hidden="true">›</span>
+            </button>
+            <button id="resetDeceasedData" class="new-deceased-data-button" type="button">Nuevos Datos</button>
+          </div>
+          <p id="deceasedSavedSummary" class="deceased-saved-summary hidden" aria-live="polite"></p>
           <button id="start46Rosary" class="start-rosary-button" type="button">
             <span>Los 46 Rosarios - INICIO</span>
             <span aria-hidden="true">›</span>
@@ -136,6 +140,21 @@
           </section>
           <div id="rosary46Mysteries" class="rosary-mysteries"></div>
           <div id="rosary46Closing" class="prayer-text rosary-closing"></div>
+        </article>
+      </section>
+
+      <section id="rosaryDeceasedReadingView" class="view">
+        <article class="reading-card rosary-reading-card deceased-rosary-card">
+          <p class="eyebrow" id="deceasedReadingDay">LUNES</p>
+          <h1>Rosario de Difuntos</h1>
+          <p id="deceasedReadingFor" class="deceased-reading-for"></p>
+          <div id="deceasedRosaryIntro" class="prayer-text rosary-intro"></div>
+          <section class="rosary-mysteries-heading">
+            <p>Los misterios que se van a meditar son:</p>
+            <h2 id="deceasedReadingMystery">MISTERIOS GOZOSOS</h2>
+          </section>
+          <div id="deceasedRosaryMysteries" class="rosary-mysteries"></div>
+          <div id="deceasedRosaryClosing" class="prayer-text rosary-closing"></div>
         </article>
       </section>
 
@@ -201,7 +220,7 @@
 
   <dialog id="settingsDialog" class="modal settings-modal">
     <div class="modal-head"><h2>Ajustes de lectura</h2><button class="close-button" aria-label="Cerrar">×</button></div>
-    <p class="version-label">Oraciones Católicas · Versión 4.8.1</p>
+    <p class="version-label">Oraciones Católicas · Versión 4.9</p>
     <label>Tamaño de letra de las ventanas <output id="viewFontSizeOutput">18 px</output></label>
     <input id="viewFontSize" type="range" min="16" max="32" value="18">
     <label>Tamaño de letra de los modales <output id="modalFontSizeOutput">18 px</output></label>
@@ -226,6 +245,29 @@
     </select>
     <button id="saveSettingsButton" class="save-settings">Guardar cambios</button>
     <p id="settingsSaved" class="settings-saved" role="status"></p>
+  </dialog>
+  <dialog id="deceasedNameDialog" class="modal deceased-setup-modal" aria-labelledby="deceasedNameTitle">
+    <div class="modal-head"><h2 id="deceasedNameTitle">Rosario de Difuntos</h2><button class="close-button" aria-label="Cerrar">×</button></div>
+    <div class="deceased-setup-body">
+      <p class="deceased-step">Paso 1 de 2</p>
+      <label for="deceasedName">Nombre de la persona difunta</label>
+      <input id="deceasedName" type="text" maxlength="18" autocomplete="off" placeholder="Máximo 18 caracteres">
+      <div class="deceased-name-meta"><span id="deceasedNameError" role="alert"></span><output id="deceasedNameCount">0 / 18</output></div>
+      <button id="acceptDeceasedName" class="save-mystery-selection" type="button">Aceptar</button>
+    </div>
+  </dialog>
+  <dialog id="deceasedGenderDialog" class="modal deceased-setup-modal" aria-labelledby="deceasedGenderTitle">
+    <div class="modal-head"><h2 id="deceasedGenderTitle">¿Es mujer?</h2><button class="close-button" aria-label="Cerrar">×</button></div>
+    <div class="deceased-setup-body">
+      <p class="deceased-step">Paso 2 de 2</p>
+      <p class="deceased-question">Selecciona una opción para personalizar las oraciones.</p>
+      <div class="deceased-gender-options" role="group" aria-label="¿Es mujer?">
+        <button type="button" data-deceased-gender="yes" aria-pressed="false">Sí</button>
+        <button type="button" data-deceased-gender="no" aria-pressed="false">No</button>
+      </div>
+      <p id="deceasedGenderError" class="deceased-gender-error" role="alert"></p>
+      <button id="acceptDeceasedGender" class="save-mystery-selection" type="button">Aceptar e iniciar Rosario</button>
+    </div>
   </dialog>
   <dialog id="mysterySelectorDialog" class="modal mystery-selector-modal" aria-labelledby="mysterySelectorTitle">
     <div class="modal-head"><h2 id="mysterySelectorTitle">Misterios a meditar</h2><button class="close-button" aria-label="Cerrar">×</button></div>
@@ -257,11 +299,12 @@
     <h2 id="gloriaBubbleTitle">Gloria</h2>
     <div id="gloriaBubbleText" class="prayer-text"></div>
   </aside>
-  <script src="contenido.js?v=4.8.1"></script>
-  <script src="contenidoSB.js?v=4.8.1"></script>
-  <script src="contenidoOraciones.js?v=4.8.1"></script>
-  <script src="contenidoRosario.js?v=4.8.1"></script>
-  <script src="contenidoRosario46.js?v=4.8.1"></script>
-  <script src="app.js?v=4.8.1"></script>
+  <script src="contenido.js?v=4.9"></script>
+  <script src="contenidoSB.js?v=4.9"></script>
+  <script src="contenidoOraciones.js?v=4.9"></script>
+  <script src="contenidoRosario.js?v=4.9"></script>
+  <script src="contenidoRosario46.js?v=4.9"></script>
+  <script src="contenidoRosarioDifuntos.js?v=4.9"></script>
+  <script src="app.js?v=4.9"></script>
 </body>
 </html>

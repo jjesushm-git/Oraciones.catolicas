@@ -7,7 +7,8 @@ const views={
   standalone:document.querySelector('#standalonePrayerView'),
   rosary:document.querySelector('#rosaryView'),
   rosaryReading:document.querySelector('#rosaryReadingView'),
-  rosary46Reading:document.querySelector('#rosary46ReadingView')
+  rosary46Reading:document.querySelector('#rosary46ReadingView'),
+  rosaryDeceasedReading:document.querySelector('#rosaryDeceasedReadingView')
 };
 const $=selector=>document.querySelector(selector);
 const backButton=$('#backButton');
@@ -42,9 +43,13 @@ let completed=[];
 let draftSettings={};
 let pendingRosaryMystery='';
 let pendingRosaryMode='today';
+let currentDeceasedProfile=null;
+let pendingDeceasedName='';
+let pendingDeceasedIsWoman=null;
 
 const LORD_DAY_URL='https://misa.jjesushmalerva.chatgpt.site/';
 const ROSARY_SELECTION_KEY='rosaryMysterySelection';
+const DECEASED_PROFILE_KEY='rosaryDeceasedProfile';
 const ROSARY_MYSTERY_IDS=['gozosos','dolorosos','gloriosos','luminosos'];
 const ROSARY_MYSTERY_SCHEDULES={
   gozosos:'Corresponden al lunes y sábado.',
@@ -67,7 +72,7 @@ function showView(name,addHistory=true,details={}){
   currentView=name;
   backButton.classList.toggle('hidden',name==='home');
   $('#sanBenitoFloating').classList.toggle('hidden',!(name==='reading'&&currentNovena==='sanBenito'));
-  $('#rosaryFloating').classList.toggle('hidden',!['rosaryReading','rosary46Reading'].includes(name));
+  $('#rosaryFloating').classList.toggle('hidden',!['rosaryReading','rosary46Reading','rosaryDeceasedReading'].includes(name));
   if(addHistory)history.pushState({view:name,novena:currentNovena,...details},'');
   window.scrollTo(0,0);
 }
@@ -142,7 +147,51 @@ function renderDays(){
 }
 
 function escapeHtml(value){
-  return value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+  return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+}
+
+function readDeceasedProfile(){
+  try{
+    const value=JSON.parse(localStorage.getItem(DECEASED_PROFILE_KEY)||'null');
+    const name=String(value?.name||'').trim().slice(0,18);
+    if(!name||typeof value?.isWoman!=='boolean')return null;
+    return {name,isWoman:value.isWoman};
+  }catch{return null}
+}
+
+function deceasedTokens(profile=currentDeceasedProfile){
+  const isWoman=Boolean(profile?.isWoman);
+  return {
+    name:profile?.name||'',
+    pronoun:isWoman?'ella':'él',
+    Pronoun:isWoman?'Ella':'Él',
+    object:isWoman?'la':'lo',
+    ourSibling:isWoman?'nuestra hermana':'nuestro hermano',
+    sibling:isWoman?'hermana':'hermano',
+    servant:isWoman?'sierva':'siervo',
+    hear:isWoman?'óyela':'óyelo',
+    listen:isWoman?'escúchala':'escúchalo',
+    forgive:isWoman?'Perdónala':'Perdónalo'
+  };
+}
+
+function personalizeDeceased(text,profile=currentDeceasedProfile){
+  const tokens=deceasedTokens(profile);
+  return String(text||'')
+    .replace(/Por Él te suplicamos/g,`Por ${tokens.Pronoun} te suplicamos`)
+    .replace(/\{\{(\w+)\}\}/g,(match,key)=>tokens[key]??match);
+}
+
+function updateDeceasedSummary(){
+  currentDeceasedProfile=readDeceasedProfile();
+  const summary=$('#deceasedSavedSummary');
+  if(!currentDeceasedProfile){
+    summary.classList.add('hidden');
+    summary.textContent='';
+    return;
+  }
+  summary.textContent=`Datos guardados: ${currentDeceasedProfile.name} · ${currentDeceasedProfile.isWoman?'Mujer':'Hombre'}`;
+  summary.classList.remove('hidden');
 }
 
 function formatPrayerText(text){
@@ -177,7 +226,7 @@ function formatPrayerText(text){
     if(isMain||isHeading){
       flush();
       parts.push(`<${isMain?'h2':'h3'} class="${isMain?'content-title':'content-heading'}">${escapeHtml(line)}</${isMain?'h2':'h3'}>`);
-    }else if(/^Am[eé]n\.?$/i.test(line)){
+    }else if(/^Am[eé]n(?:,\s*Jes[uú]s)?[.!]?$/i.test(line)){
       flush();
       parts.push(`<p class="amen">${escapeHtml(line)}</p>`);
     }else if(isEmphasis){
@@ -216,6 +265,23 @@ function formatModalPrayer(text){
     const prayer=section.replace(/\s*Amén\.?\s*$/i,'').trim();
     return `<section class="${index?'modal-gloria':'modal-prayer-section'}"><p class="modal-prayer-paragraph">${escapeHtml(prayer)}</p>${hasAmen?'<p class="modal-amen-line">Amén.</p>':''}</section>`;
   }).join('');
+}
+
+function formatSongText(text){
+  return String(text||'').replace(/\r/g,'').split('\n').map(raw=>{
+    const line=raw.trim();
+    if(!line)return '<span class="song-space" aria-hidden="true"></span>';
+    if(/^\(Coro\)|^Coro$/i.test(line))return `<p class="song-chorus">${escapeHtml(line)}</p>`;
+    return `<p class="song-line">${escapeHtml(line)}</p>`;
+  }).join('');
+}
+
+function formatDeceasedText(text){
+  const separated=String(text||'').replace(
+    /([^\n])\s+(Am[eé]n(?:,\s*Jes[uú]s)?[.!]?)\s*$/i,
+    '$1\n\n$2'
+  );
+  return formatPrayerText(separated);
 }
 
 function openDay(day,addHistory=true){
@@ -444,6 +510,7 @@ function renderRosaryReading(){
 
 function selectRosary(addHistory=true){
   updateRosaryToday();
+  updateDeceasedSummary();
   showView('rosary',addHistory);
 }
 
@@ -476,6 +543,142 @@ function startRosary46(addHistory=true){
   $('#rosaryAveCounter').textContent='‹ 1 ›';
   renderRosary46Reading();
   showView('rosary46Reading',addHistory,{rosaryDay:new Date().getDay(),rosaryKind:'46'});
+}
+
+function deceasedSongButton(song){
+  return `<button class="deceased-song-button" type="button" data-deceased-song="${song.numero}">
+    <span class="deceased-song-number">Canto ${song.numero}</span>
+    <span>${escapeHtml(song.titulo)}</span>
+    <span aria-hidden="true">♪</span>
+  </button>`;
+}
+
+function openDeceasedSong(number){
+  const songs=ROSARIO_DIFUNTOS_CONTENT.cantos[currentRosaryDay.misterio]||[];
+  const song=songs.find(item=>item.numero===number);
+  if(!song)return;
+  $('#modalTitle').textContent=`Canto ${song.numero} · ${song.titulo}`;
+  $('#modalText').innerHTML=`<section class="song-modal-content">${formatSongText(song.texto)}</section>`;
+  $('#counter').classList.add('hidden');
+  counterContext='';
+  $('#prayerDialog').showModal();
+}
+
+function bindDeceasedSongs(){
+  document.querySelectorAll('[data-deceased-song]').forEach(button=>{
+    button.onclick=()=>openDeceasedSong(Number(button.dataset.deceasedSong));
+  });
+}
+
+function renderDeceasedLitany(){
+  const litany=ROSARIO_DIFUNTOS_CONTENT.letania;
+  const pairs=[
+    ...litany.invocaciones,
+    ...litany.ruegaPor.map(invocation=>[`${invocation}.`,'Ruega por {{pronoun}}.']),
+    ...litany.cordero
+  ];
+  return `<section class="litany-section deceased-litany">
+    <h3 class="content-heading">LETANÍA</h3>
+    <p class="litany-response-note">En cada invocación respondemos por ${escapeHtml(currentDeceasedProfile.name)}.</p>
+    <div class="litany-list">${pairs.map(([invocation,response])=>`
+      <div class="litany-pair">
+        <p>${escapeHtml(personalizeDeceased(invocation))}</p>
+        <p><strong>Todos:</strong> ${escapeHtml(personalizeDeceased(response))}</p>
+      </div>`).join('')}
+    </div>
+  </section>`;
+}
+
+function renderDeceasedReading(){
+  currentDeceasedProfile=readDeceasedProfile();
+  if(!currentDeceasedProfile)return false;
+  updateRosaryToday();
+  const key=currentRosaryDay.misterio;
+  const mystery=ROSARIO_DIFUNTOS_CONTENT.misterios[key];
+  const songs=ROSARIO_DIFUNTOS_CONTENT.cantos[key];
+  $('#deceasedReadingDay').textContent=currentRosaryDay.manual?'SELECCIÓN PERSONAL':currentRosaryDay.dia.toUpperCase();
+  $('#deceasedReadingMystery').textContent=mystery.nombre;
+  $('#deceasedReadingFor').textContent=`Ofrecido por ${currentDeceasedProfile.name}`;
+  $('#deceasedRosaryIntro').innerHTML=`
+    ${formatDeceasedText(personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.inicioAntesCanto1))}
+    ${deceasedSongButton(songs[0])}
+    ${formatDeceasedText(personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.inicioDespuesCanto1))}
+    ${deceasedSongButton(songs[1])}`;
+  $('#deceasedRosaryMysteries').innerHTML=mystery.items.map((item,index)=>`
+    <section class="rosary-mystery deceased-mystery">
+      <div class="mystery-number"><span>${index+1}</span><strong>${escapeHtml(item.numero)}</strong></div>
+      <h2>${escapeHtml(item.titulo)}</h2>
+      ${item.lectura?`<p class="mystery-reading">${escapeHtml(item.lectura)}</p>`:''}
+      ${formatDeceasedText(personalizeDeceased(item.reflexion))}
+      <p class="mystery-prayer-guide">Rezar un Padre Nuestro, diez Ave Marías y las Jaculatorias.</p>
+      ${deceasedSongButton(songs[index+2])}
+    </section>`).join('');
+  $('#deceasedRosaryClosing').innerHTML=`
+    ${formatDeceasedText(personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.cierreAntesLetania))}
+    ${renderDeceasedLitany()}
+    ${formatDeceasedText(personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.cierreDespuesLetania))}
+    ${deceasedSongButton(songs[7])}`;
+  bindDeceasedSongs();
+  return true;
+}
+
+function startDeceasedRosary(addHistory=true){
+  currentDeceasedProfile=readDeceasedProfile();
+  if(!currentDeceasedProfile){
+    openDeceasedCapture();
+    return;
+  }
+  rosaryAveCount=1;
+  $('#rosaryAveCounter').textContent='‹ 1 ›';
+  renderDeceasedReading();
+  showView('rosaryDeceasedReading',addHistory,{rosaryDay:new Date().getDay(),rosaryKind:'deceased'});
+}
+
+function paintDeceasedGender(){
+  document.querySelectorAll('[data-deceased-gender]').forEach(button=>{
+    const selected=pendingDeceasedIsWoman===(button.dataset.deceasedGender==='yes');
+    button.classList.toggle('selected',selected);
+    button.setAttribute('aria-pressed',String(selected));
+  });
+}
+
+function openDeceasedCapture(){
+  const saved=readDeceasedProfile();
+  pendingDeceasedName='';
+  pendingDeceasedIsWoman=null;
+  $('#deceasedName').value=saved?.name||'';
+  $('#deceasedNameCount').textContent=`${$('#deceasedName').value.length} / 18`;
+  $('#deceasedNameError').textContent='';
+  $('#deceasedGenderError').textContent='';
+  paintDeceasedGender();
+  $('#deceasedNameDialog').showModal();
+  requestAnimationFrame(()=>$('#deceasedName').focus());
+}
+
+function acceptDeceasedName(){
+  const name=$('#deceasedName').value.trim().slice(0,18);
+  if(!name){
+    $('#deceasedNameError').textContent='Escribe un nombre.';
+    $('#deceasedName').focus();
+    return;
+  }
+  pendingDeceasedName=name;
+  $('#deceasedNameError').textContent='';
+  $('#deceasedNameDialog').close();
+  $('#deceasedGenderDialog').showModal();
+}
+
+function acceptDeceasedGender(){
+  if(typeof pendingDeceasedIsWoman!=='boolean'){
+    $('#deceasedGenderError').textContent='Selecciona Sí o No.';
+    return;
+  }
+  currentDeceasedProfile={name:pendingDeceasedName,isWoman:pendingDeceasedIsWoman};
+  localStorage.setItem(DECEASED_PROFILE_KEY,JSON.stringify(currentDeceasedProfile));
+  $('#deceasedGenderError').textContent='';
+  $('#deceasedGenderDialog').close();
+  updateDeceasedSummary();
+  startDeceasedRosary();
 }
 
 function paintSettings(values){
@@ -550,6 +753,11 @@ function restoreNavigation(state){
     showView('rosary46Reading',false);
     return;
   }
+  if(state.view==='rosaryDeceasedReading'){
+    if(renderDeceasedReading())showView('rosaryDeceasedReading',false);
+    else selectRosary(false);
+    return;
+  }
   prepareNovena(state.novena||'nudos');
   if(state.view==='reading')openDay(state.day||1,false);
   else showView(state.view,false);
@@ -561,6 +769,8 @@ $('#openLordDay').onclick=()=>openLordDay();
 $('#openRosary').onclick=()=>selectRosary();
 $('#openMysterySelector').onclick=openMysterySelector;
 $('#startRosary').onclick=()=>startRosary();
+$('#startDeceasedRosary').onclick=()=>startDeceasedRosary();
+$('#resetDeceasedData').onclick=openDeceasedCapture;
 $('#start46Rosary').onclick=()=>startRosary46();
 $('#openPrayers').onclick=()=>{
   renderGeneralPrayers();
@@ -588,6 +798,27 @@ $('#selectTodayMystery').onclick=()=>{
   paintMysteryOptions();
 };
 $('#saveMysterySelection').onclick=saveRosaryMysterySelection;
+$('#deceasedName').oninput=event=>{
+  const value=event.target.value.slice(0,18);
+  if(event.target.value!==value)event.target.value=value;
+  $('#deceasedNameCount').textContent=`${value.length} / 18`;
+  $('#deceasedNameError').textContent='';
+};
+$('#deceasedName').onkeydown=event=>{
+  if(event.key==='Enter'){
+    event.preventDefault();
+    acceptDeceasedName();
+  }
+};
+$('#acceptDeceasedName').onclick=acceptDeceasedName;
+document.querySelectorAll('[data-deceased-gender]').forEach(button=>{
+  button.onclick=()=>{
+    pendingDeceasedIsWoman=button.dataset.deceasedGender==='yes';
+    $('#deceasedGenderError').textContent='';
+    paintDeceasedGender();
+  };
+});
+$('#acceptDeceasedGender').onclick=acceptDeceasedGender;
 window.addEventListener('offline',()=>{
   if(currentView==='lordDay')loadLordDay();
 });
@@ -616,15 +847,27 @@ $('#sbGlory').onclick=()=>openPrayer('Gloria',SAN_BENITO_CONTENT.prayers.gloria)
 $('#rosaryOurFather').onclick=()=>{
   rosaryAveCount=1;
   $('#rosaryAveCounter').textContent='‹ 1 ›';
-  const prayer=currentView==='rosary46Reading'?ROSARIO_46_CONTENT.padreNuestro:ORACIONES_GENERALES.padreNuestro.texto;
+  const prayer=currentView==='rosary46Reading'
+    ?ROSARIO_46_CONTENT.padreNuestro
+    :currentView==='rosaryDeceasedReading'
+      ?personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.padreNuestro)
+      :ORACIONES_GENERALES.padreNuestro.texto;
   openPrayer('Padre Nuestro',prayer,false,true);
 };
 $('#rosaryHailMary').onclick=()=>{
-  const prayer=currentView==='rosary46Reading'?ROSARIO_46_CONTENT.aveMaria:ORACIONES_GENERALES.aveMaria.texto;
+  const prayer=currentView==='rosary46Reading'
+    ?ROSARIO_46_CONTENT.aveMaria
+    :currentView==='rosaryDeceasedReading'
+      ?personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.aveMaria)
+      :ORACIONES_GENERALES.aveMaria.texto;
   openPrayer('Ave María',prayer,true,true,rosaryAveCount,'rosary');
 };
 $('#rosaryJaculatory').onclick=()=>{
-  const prayer=currentView==='rosary46Reading'?ROSARIO_46_CONTENT.jaculatorias:ROSARIO_CONTENT.jaculatorias;
+  const prayer=currentView==='rosary46Reading'
+    ?ROSARIO_46_CONTENT.jaculatorias
+    :currentView==='rosaryDeceasedReading'
+      ?personalizeDeceased(ROSARIO_DIFUNTOS_CONTENT.jaculatorias)
+      :ROSARIO_CONTENT.jaculatorias;
   openPrayer('Jaculatorias',prayer,false,true);
 };
 
@@ -655,6 +898,7 @@ $('#settingsDialog').addEventListener('close',applySettings);
 prepareNovena('nudos');
 renderGeneralPrayers();
 updateRosaryToday();
+updateDeceasedSummary();
 applySettings();
 
 if(!sessionStorage.getItem('novenaHistoryReady')){
@@ -680,5 +924,5 @@ window.addEventListener('popstate',event=>{
 });
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.8.1'));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js?v=4.9'));
 }

@@ -1,12 +1,14 @@
-# Oraciones Católicas — Versión 4.8.1
+# Oraciones Católicas — Versión 4.9
 
 Aplicación web progresiva (PWA) para Android, celular y computadora.
 
 ## Novedad de esta versión
 
-- Se eliminaron los símbolos **+** de la oración de la señal de la cruz.
-- La corrección se aplicó tanto al inicio como al final de **Los 46 Rosarios**.
-- Se conserva el formato separado de todos los **Amén.** y el resto del contenido.
+- Se activó **Rosario de Difuntos - INICIO** con nombre de hasta 18 caracteres.
+- La selección **¿Es mujer?** adapta automáticamente pronombres y expresiones de las oraciones.
+- Los datos quedan guardados en el dispositivo hasta pulsar **Nuevos Datos**.
+- Funcionan los misterios del día y la selección personal.
+- Cada grupo de misterios incluye sus cinco meditaciones y ocho cantos en modales de lectura.
 
 ## Contenido editable
 
@@ -15,6 +17,7 @@ Aplicación web progresiva (PWA) para Android, celular y computadora.
 - `contenidoOraciones.js`: libro de oraciones.
 - `contenidoRosario.js`: inicio, misterios, letanía, jaculatorias y cierre del Rosario Mariano.
 - `contenidoRosario46.js`: inicio, misterios, jaculatorias y cierre del Rosario de 46 días.
+- `contenidoRosarioDifuntos.js`: misterios, oraciones personalizables, letanía y cantos del Rosario de Difuntos.
 
 Los archivos de contenido están separados por secciones y contienen indicaciones para facilitar su edición.
 
