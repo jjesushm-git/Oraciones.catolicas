@@ -72,7 +72,7 @@ const ROSARIO_DIFUNTOS_CONTENT = {
         },
         {
           "numero": "CUARTO MISTERIO",
-          "titulo": "Jesús condenado a muerte y con la Cruz a cuestas se encuentra con María, su tierna Madre",
+          "titulo": "La subida de Jesús al Calavario",
           "lectura": "",
           "reflexion": "¡Oh María, traspasada de dolor en la calle de la amargura por encontrar en ella a tu inocente Hijo sentenciado a muerte y agobiado con el gran peso de la Cruz! Este Padre Nuestro y diez Ave Marías te ofrecemos, suplicándote que el alma de {{ourSibling}} {{name}} y las demás almas del Purgatorio, por tus ruegos, sean libres de la cruz de penas que padecen. Amén, Jesús."
         },
@@ -113,7 +113,7 @@ const ROSARIO_DIFUNTOS_CONTENT = {
         },
         {
           "numero": "QUINTO MISTERIO",
-          "titulo": "La Coronación de María como Reina y Señora de todo lo creado",
+          "titulo": "Maria es coronada como Reina del cielo y tierra",
           "lectura": "",
           "reflexion": "¡Oh soberana Virgen María, Madre de Dios, que resucitada de cuerpo y alma fuiste sublimada a la Gloria y coronada por Emperatriz de los Ángeles y de los hombres! Este Padre Nuestro y diez Ave Marías te ofrecemos, suplicándote que el alma de {{ourSibling}} {{name}} y las demás almas del Purgatorio sean coronadas en la Gloria. Amén, Jesús."
         }
@@ -142,20 +142,20 @@ const ROSARIO_DIFUNTOS_CONTENT = {
         },
         {
           "numero": "CUARTO MISTERIO",
-          "titulo": "La Institución de la Eucaristía",
+          "titulo": "La transfiguracion de Señor",
           "lectura": "",
-          "reflexion": "¡Oh Santa Madre, llena eres de Gracia! Este Padre Nuestro y diez Ave Marías te ofrecemos, suplicándote que el alma de {{ourSibling}} {{name}} y las demás almas del Purgatorio sean llevadas a la Gloria a través de tu Hijo amado, porque Él es el camino, la verdad y la vida, y nadie va al Padre si no es por Él. Amén, Jesús."
+          "reflexion": "¡Oh Maria dulce santicima llena de Fe y obediencias al mandato de tu Dios! Este Padre Nuestro y diez Ave Marías te ofrecemos, suplicándote que el alma de {{ourSibling}} {{name}} y las demás almas del Purgatorio sean llevadas a la Gloria a través de tu Hijo amado, porque Él es el camino, la verdad y la vida, y nadie va al Padre si no es por Él. Amén, Jesús."
         },
         {
           "numero": "QUINTO MISTERIO",
-          "titulo": "El Niño Perdido y Hallado en el Templo",
+          "titulo": "La Institución De La Eucaristía",
           "lectura": "",
-          "reflexion": "¡Oh Purísima María, seguro medio para hallar a Jesús! Este Padre Nuestro y diez Ave Marías te ofrecemos por el gozo que tuviste cuando hallaste en el templo al Niño Dios, sin culpa tuya perdido; por {{Pronoun}} te suplicamos que el alma de {{ourSibling}} {{name}} y las demás almas del Purgatorio tengan, por tus ruegos, el alivio de sus penas, mirando a Jesús en el templo de su Gloria. Amén, Jesús."
+          "reflexion": "¡Oh Santa Madre llena ere de gracia! Este Padre Nuestro y diez Ave Marías te ofrecemos, suplicandote que el alma de {{ourSibling}} {{name}} y las demás almas del Purgatorio, sean llevadas a la gloria a travez de tu hijo amado porque el es el camino, la verdad y la vida y nadie va al padres si no es por él Amén, Jesús."
         }
       ]
     }
   },
-  "cierreAntesLetania": "Oraciones después de los misterios:\n\nOh, Soberano Santuario, Madre del Verbo Eterno.\n\nTodos: Libra, Virgen, del infierno a los que rezamos tu Santo Rosario.\n\nEmperatriz poderosa, de los mortales consuelo.\n\nTodos: Ábrenos, Virgen, el Cielo con una muerte dichosa y danos pureza de alma, ya que eres tan poderosa.\n\nOfrecimiento:\n\nPor estos misterios santos te pedimos, ¡oh María!, la conservación y aumento de nuestra fe. Torna tus divinos ojos hacia tu pueblo cristiano. Da a tu Iglesia la victoria y al mundo grato sosiego. Las almas del Purgatorio gozosas vayan al Cielo y, por tu amor, merezcamos gozar del eterno premio.\n\nDios te salve, María Santísima, Hija de Dios Padre. En tus manos encomendamos nuestra fe y el alma de {{ourSibling}} {{name}} para que {{object}} ayudes.\n\nTodos: Santa María, Madre de Dios, ruega por {{pronoun}}.\n\nDios te salve, María Santísima, Madre de Dios Hijo. En tus manos encomendamos nuestra esperanza y el alma de {{ourSibling}} {{name}} para que {{object}} perdones.\n\nTodos: Santa María, Madre de Dios, ruega por {{pronoun}}.\n\nDios te salve, María Santísima, Esposa de Dios Espíritu Santo. En tus manos encomendamos nuestra caridad y el alma de {{ourSibling}} {{name}} para que {{object}} salves.\n\nTodos: Santa María, Madre de Dios, ruega por {{pronoun}}.\n\nReina y Madre de misericordia, vida, dulzura y esperanza nuestra: Dios te salve. Ruega por {{pronoun}} y por nosotros, Santa Madre de Dios, para que seamos dignos de alcanzar las divinas gracias y promesas de nuestro Señor Jesucristo.\n\nAmén.",
+  "cierreAntesLetania": "Oraciones después de los misterios:\n\nOh, Soberano Santuario, Madre del Verbo Eterno.\n\nTodos: Libra, Virgen, del infierno a los que rezamos tu Santo Rosario.\n\nEmperatriz poderosa, de los mortales consuelo.\n\nTodos: Ábrenos, Virgen, el Cielo con una muerte dichosa y danos pureza de alma, ya que eres tan poderosa.\n\nOfrecimiento:\n\nPor estos misterios santos de que hace el alma recuerdo te pedimos ¡Oh María! Con tierno y devoto pecho de nuestra fe sacrosanta la conservación y aumento. Torna tus divinos ojos hacia tu cristiano pueblo. Da a tu iglesia la victoria y al mundo grato sosiego serena tus tempestades que airado descarga el Cielo. Y el Pontífice Augusto mitiga el dolor acerbo; las terrenas Potestades sigan de Dios los preceptos, porque la justicia torne y al bien vayan sus esfuerzos. Que a Dios el gentil conozca, su error abjure el soberbio, que de la verdad aparta corazón y entendimiento que la culpa nos inspire dolor profundo y perfecto hallé puerto el navegante y la salud el enfermo. Las almas del Purgatorio gozosas vayan al Cielo; y este santo ejercicio tenga ¡Oh Madre! Tal aumento en todo el orbe cristiano que fiel adora al Dios bueno; que de continua alabanza sean tus glorias objeto y por tu amor merezcamos gozar del eterno premio.\n\nDios te salve, María Santísima, Hija de Dios Padre. En tus manos encomendamos nuestra fe y el alma de {{ourSibling}} {{name}} para que {{object}} ayudes.\n\nTodos: Santa María, Madre de Dios, ruega por {{pronoun}}.\n\nDios te salve, María Santísima, Madre de Dios Hijo. En tus manos encomendamos nuestra esperanza y el alma de {{ourSibling}} {{name}} para que {{object}} perdones.\n\nTodos: Santa María, Madre de Dios, ruega por {{pronoun}}.\n\nDios te salve, María Santísima, Esposa de Dios Espíritu Santo. En tus manos encomendamos nuestra caridad y el alma de {{ourSibling}} {{name}} para que {{object}} salves.\n\nTodos: Santa María, Madre de Dios, ruega por {{pronoun}}.\n\nReina y Madre de misericordia, vida, dulzura y esperanza nuestra: Dios te salve. Ruega por {{pronoun}} y por nosotros, Santa Madre de Dios, para que seamos dignos de alcanzar las divinas gracias y promesas de nuestro Señor Jesucristo.\n\nAmén.",
   "letania": {
     "invocaciones": [
       [
